@@ -1,4 +1,4 @@
-#CS
+#CS = Comment Block Start ==========================================================================
 #################################
 #								#
 #			Vaettir Bot			#
@@ -6,7 +6,7 @@
 #################################
 Author: gigi
 Modified by: Pink Musen (v.01), Deroni93 (v.02-3), Dragonel (with help from moneyvsmoney), Night
-#CE
+#CE = Comment Block End ============================================================================
 
 #include-once
 #NoTrayIcon

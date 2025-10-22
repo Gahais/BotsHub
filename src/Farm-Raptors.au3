@@ -1,4 +1,4 @@
-#CS
+#CS = Comment Block Start ==========================================================================
 #################################
 #								#
 #	Raptor Bot
@@ -7,7 +7,7 @@
 Author: Rattiev
 Based on : Vaettir Bot by gigi
 Modified by: Night
-#CE
+#CE = Comment Block End ============================================================================
 
 #include-once
 #RequireAdmin

@@ -1,7 +1,7 @@
-#CS
-Author: gigi
-Modified by: MrZambix, Night, and more
-#CE
+#CS = Comment Block Start ==========================================================================
+; Author: gigi
+; Modified by: MrZambix, Night, and more
+#CE = Comment Block End ============================================================================
 
 #include-once
 
