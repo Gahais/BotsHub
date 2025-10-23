@@ -65,8 +65,8 @@ Func RunTests($STATUS)
 	;Info(_dlldisplay(GetEffect($ID_Shroud_of_Distress)))
 	;RandomSleep(1000)
 
-	;Return 0
-	Return 2
+	;Return $SUCCES
+	Return $PAUSE
 EndFunc
 
 
