@@ -71,10 +71,10 @@ Func KurzickFarmSetup()
 			WEnd
 		Else
 			Info('Buying Amber fragments')
-			Dialog(131)
+			Dialog(0x83)
 			RandomSleep(550)
 			Local $temp = Floor(GetKurzickFaction() / 5000)
-			Local $id = 8388609 + ($temp * 256)
+			Local $id = 0x800001 + ($temp * 256)
 			Dialog($id)
 			RandomSleep(550)
 		EndIf
