@@ -48,6 +48,7 @@ Func KurzickFactionFarm($STATUS)
 
 	; Temporarily change a failure into a pause for debugging :
 	;If $result == $FAIL Then $result = $PAUSE
+	TravelToOutpost($ID_House_Zu_Heltzer, $DISTRICT_NAME)
 	Return $result
 EndFunc
 

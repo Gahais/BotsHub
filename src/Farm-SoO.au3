@@ -45,8 +45,9 @@ Func SoOFarm($STATUS)
 	EndIf
 
 	If $STATUS <> 'RUNNING' Then Return $PAUSE
-
-	Return SoOFarmLoop()
+	Local $result = SoOFarmLoop()
+	TravelToOutpost($ID_Vloxs_Fall, $DISTRICT_NAME)
+	Return $result
 EndFunc
 
 
@@ -131,7 +132,7 @@ EndFunc
 Func GetRewardRefreshAndTakeSoOQuest()
 	Info('Get quest reward')
 	MoveTo(11996, -17846)
-	; Doubled to secure
+	;~ Doubled to secure bot
 	For $i = 1 To 2
 		GoToNPC(GetNearestNPCToCoords(12056, -17882))
 		RandomSleep(250)
@@ -164,7 +165,7 @@ Func GetRewardRefreshAndTakeSoOQuest()
 	MoveTo(11177, -17683)
 	MoveTo(11996, -17846)
 
-	; Doubled to secure
+	;~ Doubled to secure bot
 	For $i = 1 To 2
 		GoToNPC(GetNearestNPCToCoords(12056, -17882))
 		RandomSleep(250)
@@ -173,7 +174,7 @@ Func GetRewardRefreshAndTakeSoOQuest()
 	Next
 
 	Info('Talk to Shandra again if already had quest')
-	; Doubled to secure
+	;~ Doubled to secure bot
 	For $i = 1 To 2
 		GoToNPC(GetNearestNPCToCoords(12056, -17882))
 		RandomSleep(250)
@@ -259,7 +260,7 @@ Func ClearSoOFloor1()
 	While Not IsRunFailed() And Not $mapLoaded
 		Info('Open dungeon door')
 		ClearTarget()
-		; Doubled to secure
+		;~ Doubled to secure bot
 		For $i = 1 To 2
 			MoveTo(15041, 5475)
 			TargetNearestItem()
@@ -277,7 +278,7 @@ Func ClearSoOFloor1()
 		RandomSleep(2000)
 		$mapLoaded = WaitMapLoading($ID_Shards_of_Orr_Floor_2)
 	WEnd
-	If IsRunFailed() Then Return $FAIL
+	Return IsRunFailed()? $FAIL : $SUCCESS
 EndFunc
 
 
@@ -302,7 +303,7 @@ Func ClearSoOFloor2()
 		ClearTarget()
 		Sleep(GetPing() + 500)
 
-		For $i = 1 To 2
+		For $i = 1 To 2 ;~ Doubled to secure bot
 			MoveTo(-14709, -16548)
 			TargetNearestItem()
 			Sleep(1500)
@@ -386,7 +387,7 @@ Func ClearSoOFloor2()
 	While Not IsRunFailed() And Not $mapLoaded
 		Info('Open dungeon door')
 		ClearTarget()
-		For $i = 1 To 3
+		For $i = 1 To 3 ;~ Tripled to secure bot
 			MoveTo(-18725, -9171)
 			TargetNearestItem()
 			ActionInteract()
@@ -399,7 +400,7 @@ Func ClearSoOFloor2()
 		RandomSleep(2000)
 		$mapLoaded = WaitMapLoading($ID_Shards_of_Orr_Floor_3)
 	WEnd
-	If IsRunFailed() Then Return $FAIL
+	Return IsRunFailed()? $FAIL : $SUCCESS
 EndFunc
 
 
@@ -450,7 +451,7 @@ Func ClearSoOFloor3()
 
 		Info('Open torch chest')
 		ClearTarget()
-		For $i = 1 To 2
+		For $i = 1 To 2 ;~ Doubled to secure bot
 			Sleep(GetPing() + 500)
 			MoveTo(16134, 17590)
 			TargetNearestItem()
@@ -499,7 +500,7 @@ Func ClearSoOFloor3()
 		Info('Open dungeon door')
 		ClearTarget()
 
-		For $i = 1 To 2
+		For $i = 1 To 2 ;~ Doubled to secure bot
 			Sleep(GetPing() + 500)
 			MoveTo(-9214, 6323)
 			TargetNearestItem()
@@ -531,7 +532,7 @@ Func ClearSoOFloor3()
 	WEnd
 	If IsRunFailed() Then Return $FAIL
 
-	; Doubled to try securing the looting
+	;~ Doubled to try securing the looting
 	For $i = 1 To 2
 		MoveTo(-15800, 16950)
 		Info('Opening Fendis chest')
@@ -541,6 +542,7 @@ Func ClearSoOFloor3()
 		PickUpItems()
 	Next
 	MoveTo(-15700, 17150)
+	Return $SUCCESS
 EndFunc
 
 
@@ -574,7 +576,7 @@ Func PickUpTorch()
 			$deadlock = TimerInit()
 			While GetAgentExists($i)
 				RandomSleep(500)
-				If IsPlayerDead() Then Return
+				If IsPlayerDead() Then Return False
 				If TimerDiff($deadlock) > 20000 Then
 					Error('Could not get torch at (' & DllStructGetData($agent, 'X') & ', ' & DllStructGetData($agent, 'Y') & ')')
 					Return False
