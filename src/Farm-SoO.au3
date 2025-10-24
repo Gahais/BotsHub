@@ -39,9 +39,9 @@ Global $SOO_FARM_SETUP = False
 
 ;~ Main method to farm SoO
 Func SoOFarm($STATUS)
+	;~ Need to be done here in case bot comes back from inventory management
 	If Not $SOO_FARM_SETUP Then
-		SetupSoOFarm()
-		$SOO_FARM_SETUP = True
+		If SetupSoOFarm() == $FAIL Then Return $FAIL
 	EndIf
 
 	If $STATUS <> 'RUNNING' Then Return $PAUSE
@@ -53,12 +53,12 @@ EndFunc
 ;~ SoO farm setup
 Func SetupSoOFarm()
 	Info('Setting up farm')
-	; Need to be done here in case bot comes back from inventory management
-	If GetMapID() <> $ID_Vloxs_Fall Then DistrictTravel($ID_Vloxs_Fall, $DISTRICT_NAME)
-
+	If TravelToOutpost($ID_Vloxs_Fall, $DISTRICT_NAME) == $FAIL Then Return $FAIL
 	SwitchToHardModeIfEnabled()
-	RunToShardsOfOrrDungeon()
+	If RunToShardsOfOrrDungeon() == $FAIL Then Return $FAIL
+	$SOO_FARM_SETUP = True
 	Info('Preparations complete')
+	Return $SUCCESS
 EndFunc
 
 
@@ -98,8 +98,8 @@ Func RunToShardsOfOrrDungeon()
 		MoveAggroAndKill(10314, -16111, '8', $SoOAggroRange)
 		MoveAggroAndKill(11156, -17802, '9', $SoOAggroRange)
 	WEnd
-	If IsRunFailed() Then Return $FAIL
 	AdlibUnRegister('TrackPartyStatus')
+	Return IsRunFailed() ? $FAIL : $SUCCESS
 EndFunc
 
 
