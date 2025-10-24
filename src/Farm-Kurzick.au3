@@ -39,11 +39,6 @@ Global $DonatePoints = True
 
 ;~ Main loop for the kurzick faction farm
 Func KurzickFactionFarm($STATUS)
-	If GetMapID() <> $ID_House_Zu_Heltzer Then
-		Info('Moving to Outpost')
-		DistrictTravel($ID_House_Zu_Heltzer, $DISTRICT_NAME)
-	EndIf
-
 	KurzickFarmSetup()
 
 	If $STATUS <> 'RUNNING' Then Return $PAUSE
@@ -59,6 +54,8 @@ EndFunc
 
 ;~ Setup for kurzick farm
 Func KurzickFarmSetup()
+	Info('Setting up farm')
+	TravelToOutpost($ID_House_Zu_Heltzer, $DISTRICT_NAME)
 	If GetKurzickFaction() > (GetMaxKurzickFaction() - 25000) Then
 		Info('Turning in Kurzick faction')
 		RandomSleep(200)
@@ -89,11 +86,13 @@ Func KurzickFarmSetup()
 	EndIf
 
 	SwitchMode($ID_HARD_MODE)
+	Info('Preparations complete')
 EndFunc
 
 
 ;~ Vanquish the Ferndale map
 Func VanquishFerndale()
+	If GetMapID() <> $ID_House_Zu_Heltzer Then Return $FAIL
 	MoveTo(7810, -726)
 	MoveTo(10042, -1173)
 	Move(10446, -1147, 5)

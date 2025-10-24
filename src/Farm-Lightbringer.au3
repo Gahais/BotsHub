@@ -48,7 +48,7 @@ Global Const $Junundu_Leave 	= 8
 
 ;~ Main entry point to the farm - calls the setup if needed, the loop else, and the going in and out of the map
 Func LightbringerFarm($STATUS)
-	If GetMapID() <> $ID_Remains_of_Sahlahja Then DistrictTravel($ID_Remains_of_Sahlahja, $DISTRICT_NAME)
+	;~ Need to be done here in case bot comes back from inventory management
 	If Not $LIGHTBRINGER_FARM_SETUP Then LightbringerFarmSetup()
 	If $STATUS <> 'RUNNING' Then Return $PAUSE
 
@@ -62,6 +62,8 @@ EndFunc
 
 ;~ Setup for the Lightbringer farm
 Func LightbringerFarmSetup()
+	Info('Setting up farm')
+	TravelToOutpost($ID_Remains_of_Sahlahja, $DISTRICT_NAME)
 	If $LOG_LEVEL == 0 Then $loggingFile = FileOpen(@ScriptDir & '/logs/lightbringer_farm-' & GetCharacterName() & '.log', $FO_APPEND + $FO_CREATEPATH + $FO_UTF8)
 
 	LeaveParty()
@@ -82,11 +84,13 @@ Func LightbringerFarmSetup()
 	SetDisplayedTitle($ID_Lightbringer_Title)
 	SwitchMode($ID_HARD_MODE)
 	$LIGHTBRINGER_FARM_SETUP = True
+	Info('Preparations complete')
 EndFunc
 
 
 ;~ Move out of city into the Sulfurous Wastes
 Func ToTheSulfurousWastes()
+	Info('Moving to the Sulfurous Wastes')
 	While GetMapID() <> $ID_The_Sulfurous_Wastes
 		MoveTo(1527, -4114)
 		Move(1970, -4353)
@@ -98,6 +102,7 @@ EndFunc
 
 ;~ Farm the Sulfurous Wastes - main function
 Func FarmTheSulfurousWastes()
+	If GetMapID() <> $ID_The_Sulfurous_Wastes Then Return $FAIL
 	Info('Taking Sunspear Undead Blessing')
 	GoToNPC(GetNearestNPCToCoords(-660, 16000))
 	Dialog(0x83)

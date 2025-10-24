@@ -126,16 +126,43 @@ DPS spot :				X: -850.958312988281, Y: -3961.001953125 (1s)
 
 ;~ Main loop of the Ministerial Commendations farm
 Func MinisterialCommendationsFarm($STATUS)
-	; Need to be done here in case bot comes back from inventory management
-	If GetMapID() <> $ID_Current_Kaineng_City Then
-		Info('Travelling to Kaineng City')
-		DistrictTravel($ID_Current_Kaineng_City, $DISTRICT_NAME)
-	EndIf
-	If Not $MINISTERIAL_COMMENDATIONS_FARM_SETUP Then Setup()
+	;~ Need to be done here in case bot comes back from inventory management
+	If Not $MINISTERIAL_COMMENDATIONS_FARM_SETUP Then SetupMinisterialCommendationsFarm()
+	If $STATUS <> 'RUNNING' Then Return $PAUSE
+
+	Local $result = MinisterialCommendationsFarmLoop()
+	Return $result
+EndFunc
+
+
+;~ Setup for the farm - load build and heroes, move in the correct zone
+Func SetupMinisterialCommendationsFarm()
+	Info('Setting up farm')
+	TravelToOutpost($ID_Current_Kaineng_City, $DISTRICT_NAME)
+	LeaveParty()
+
+	LoadSkillTemplate($DWCommendationsFarmerSkillbar)
+
+	AddHero($ID_Gwen)
+	AddHero($ID_Norgu)
+	AddHero($ID_Razah)
+	AddHero($ID_mesmer_mercenary_hero)
+	AddHero($ID_ritualist_mercenary_hero)
+	AddHero($ID_Xandra)
+	AddHero($ID_Olias)
+
+	SwitchMode($ID_HARD_MODE)
+	$MINISTERIAL_COMMENDATIONS_FARM_SETUP = True
+	Info('Preparations complete')
+EndFunc
+
+
+Func MinisterialCommendationsFarmLoop()
+	If GetMapID() <> $ID_Current_Kaineng_City Then Return $FAIL
 	If $LOG_LEVEL == 0 Then $loggingFile = FileOpen(@ScriptDir & '/logs/commendation_farm-' & GetCharacterName() & '.log', $FO_APPEND + $FO_CREATEPATH + $FO_UTF8)
 
 	Info('Entering quest')
-	EnterQuest()
+	EnterAChanceEncounterQuest()
 	If GetMapID() <> $ID_Kaineng_A_Chance_Encounter Then Return
 
 	If $STATUS <> 'RUNNING' Then Return $PAUSE
@@ -178,27 +205,8 @@ Func MinisterialCommendationsFarm($STATUS)
 EndFunc
 
 
-;~ Setup for the farm - load build and heroes, move in the correct zone
-Func Setup()
-	LeaveParty()
-
-	LoadSkillTemplate($DWCommendationsFarmerSkillbar)
-
-	AddHero($ID_Gwen)
-	AddHero($ID_Norgu)
-	AddHero($ID_Razah)
-	AddHero($ID_mesmer_mercenary_hero)
-	AddHero($ID_ritualist_mercenary_hero)
-	AddHero($ID_Xandra)
-	AddHero($ID_Olias)
-
-	SwitchMode($ID_HARD_MODE)
-	$MINISTERIAL_COMMENDATIONS_FARM_SETUP = True
-EndFunc
-
-
 ;~ Enter the mission A Chance Encounter
-Func EnterQuest()
+Func EnterAChanceEncounterQuest()
 	Local $me = GetMyAgent()
 	Local $coordsX = DllStructGetData($me, 'X')
 	Local $coordsY = DllStructGetData($me, 'Y')

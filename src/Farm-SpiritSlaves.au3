@@ -57,6 +57,7 @@ Global Const $skillCostsMap = MapFromArrays($SS_SkillsArray, $SS_SkillsCostsArra
 
 ;~ Main loop of the farm
 Func SpiritSlavesFarm($STATUS)
+	;~ Need to be done here in case bot comes back from inventory management
 	While Not($SPIRIT_SLAVES_FARM_SETUP)
 		SpiritSlavesFarmSetup()
 	WEnd
@@ -92,10 +93,7 @@ EndFunc
 ;~ Farm setup : going to the Shattered Ravines
 Func SpiritSlavesFarmSetup()
 	If GetMapID() <> $ID_The_Shattered_Ravines Then
-		If GetMapID() <> $ID_Bone_Palace Then
-			Info('Travelling to Bone Palace')
-			DistrictTravel($ID_Bone_Palace, $DISTRICT_NAME)
-		EndIf
+		If TravelToOutpost($ID_Bone_Palace, $DISTRICT_NAME) == $FAIL Then Return $FAIL
 		SwitchMode($ID_HARD_MODE)
 		LeaveParty()
 
@@ -106,7 +104,7 @@ Func SpiritSlavesFarmSetup()
 		MoveTo(-14520, 6009)
 		Move(-14820, 3400)
 		RandomSleep(1000)
-		WaitMapLoading($ID_Jokos_Domain)
+		If Not WaitMapLoading($ID_Jokos_Domain) Then Return $FAIL
 		RandomSleep(500)
 		MoveTo(-12657, 2609)
 		ChangeWeaponSet(4)
@@ -136,14 +134,14 @@ Func SpiritSlavesFarmSetup()
 		WEnd
 
 		; If dead it's not worth rezzing better just restart running
-		If IsPlayerDead() Then Return
+		If IsPlayerDead() Then Return $FAIL
 
 		MoveTo(-4486, 19700)
 		RandomSleep(3000)
 		MoveTo(-4486, 19700)
 
 		; If dead it's not worth rezzing better just restart running
-		If IsPlayerDead() Then Return
+		If IsPlayerDead() Then Return $FAIL
 
 		; Entering The Shattered Ravines
 		ChangeWeaponSet(1)
@@ -151,12 +149,13 @@ Func SpiritSlavesFarmSetup()
 		MoveTo(-4500, 20150)
 		Move(-4500, 21000)
 		RandomSleep(1000)
-		WaitMapLoading($ID_The_Shattered_Ravines, 10000, 2000)
+		If Not WaitMapLoading($ID_The_Shattered_Ravines, 10000, 2000) Then Return $FAIL
 		; Hurry up before dying
 		MoveTo(-9714, -10767)
 		MoveTo(-7919, -10530)
 	EndIf
 	$SPIRIT_SLAVES_FARM_SETUP = True
+	Return $SUCCESS
 EndFunc
 
 
