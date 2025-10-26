@@ -2331,6 +2331,7 @@ Func WaitAndFightEnemiesInArea($options = Null)
 	Local $timer = TimerInit()
 
 	While $foesCount > 0 Or TimerDiff($timer) < $fightDuration
+		If GetMapLoading() == 2 Then Disconnected()
 		If IsPlayerAndPartyWiped() Then Return $FAIL
 		RandomSleep(250)
 		$target = GetNearestEnemyToAgent($me)
@@ -2398,6 +2399,7 @@ Func MoveAggroAndKill($x, $y, $log = '', $options = Null)
 	Local $target
 	Local $chest
 	While IsPlayerOrPartyAlive() And GetDistanceToPoint(GetMyAgent(), $x, $y) > $RANGE_NEARBY And $blocked < 10
+		If GetMapLoading() == 2 Then Disconnected()
 		$oldMyX = $myX
 		$oldMyY = $myY
 		$me = GetMyAgent() ;~ updating/sampling player's agent data
@@ -2457,6 +2459,7 @@ Func KillFoesInArea($options = Null)
 	If $flagHeroes Then FanFlagHeroes(260) ;~ 260 distance larger than nearby distance = 240 to avoid AoE damage and still quite compact formation
 
 	While IsPlayerOrPartyAlive() And $foesCount > 0
+		If GetMapLoading() == 2 Then Disconnected()
 		If $priorityMobs Then $target = GetHighestPriorityFoe($me, $fightRange)
 		If Not $priorityMobs Or $target == Null Then $target = GetNearestEnemyToAgent($me)
 		If IsPlayerAlive() And $target <> Null And DllStructGetData($target, 'ID') <> 0 And Not GetIsDead($target) And GetDistance($me, $target) < $fightRange Then
