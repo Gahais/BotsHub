@@ -104,6 +104,12 @@ Func SetupWarSupplyFarm()
 	Else
 		Info('Found Keiran''s bow in player''s inventory')
 	EndIf
+	Info('Changing Weapons: Slot-4 Keiran Bow')
+	ChangeWeaponSet(4)
+	If Not IsItemEquippedInWeaponSlot($ID_Keirans_Bow, 4) Then
+		Info('Equipping Keiran''s bow')
+		EquipItemByModelID($ID_Keirans_Bow)
+	EndIf
 	SwitchMode($ID_NORMAL_MODE)
 	$WARSUPPLY_FARM_SETUP = True
 	Info('Preparations complete')
@@ -132,8 +138,7 @@ Func WarSupplyFarmLoop()
 	If $result == $FAIL Then
 		If IsPlayerDead() Then Warn('Player died')
 		ReturnBackToOutpost($ID_Hall_of_Monuments)
-		Sleep(2000)
-		ChangeWeaponSet(4)
+		Sleep(3000)
 	EndIf
 	return $result
 EndFunc
@@ -159,10 +164,6 @@ Func EnterAuspiciousBeginningsQuest()
 	Info('Entering Auspicious Beginnings quest')
 	Info('Changing Weapons: Slot-4 Keiran Bow')
 	ChangeWeaponSet(4)
-	If Not IsItemEquippedInWeaponSlot($ID_Keirans_Bow, 4) Then
-		Info('Equipping Keiran''s bow')
-    	EquipItemByModelID($ID_Keirans_Bow)
-	EndIf
 	MoveTo(-6445, 6415)
 	Local $scryingPool = GetNearestNpcToCoords(-6662, 6584)
 	ChangeTarget($scryingPool)
@@ -200,7 +201,7 @@ Func RunQuest()
 		Sleep(1000)
 		If TimerDiff($deadlock) > 120000 Then Return $FAIL ;~ if 2 minutes elapsed after a final fight and still not left the then some stuck occurred, therefore exiting
 	WEnd
-	Sleep(2000)
+	Sleep(3000)
 	Return $SUCCESS
 EndFunc
 
