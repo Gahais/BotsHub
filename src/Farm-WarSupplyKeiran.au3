@@ -239,6 +239,7 @@ Func RunWayPoints()
  	Info("Running through way points")
 	Local $x, $y, $log, $range
 	For $i = 0 To UBound($waypoints) - 1
+		If GetMapLoading() == 2 Or (GetMapID() <> $AuspiciousBeginningsMapID And GetMapID() <> $ID_Hall_of_Monuments) Then Disconnected()
 		$x = $wayPoints[$i][0]
 		$y = $wayPoints[$i][1]
 		$log = $wayPoints[$i][2]
