@@ -59,6 +59,7 @@
 #include 'src/Farm-FoWTowerOfCourage.au3'
 #include 'src/Farm-Froggy.au3'
 #include 'src/Farm-Gemstones.au3'
+#include 'src/Farm-GemstoneMargonite.au3'
 #include 'src/Farm-GemstoneStygian.au3'
 #include 'src/Farm-JadeBrotherhood.au3'
 #include 'src/Farm-Kournans.au3'
@@ -999,8 +1000,9 @@ Func RunFarmLoop($Farm)
 		Case 'Gemstones'
 			$INVENTORY_SPACE_NEEDED = 10
 			$result = GemstonesFarm($STATUS)
+		Case 'Gemstone Margonite'
 			$INVENTORY_SPACE_NEEDED = 10
-			$result = GemstoneFarm($STATUS)
+			$result = GemstoneMargoniteFarm($STATUS)
 		Case 'Gemstone Stygian'
 			$INVENTORY_SPACE_NEEDED = 10
 			$result = GemstoneStygianFarm($STATUS)
@@ -1102,7 +1104,6 @@ Func ResetBotsSetups()
 	$FEATHERS_FARM_SETUP					= False
 	$FOW_FARM_SETUP							= False
 	$FROGGY_FARM_SETUP						= False
-	$GEMSTONE_STYGIAN_FARM_SETUP			= False
 	$IRIS_FARM_SETUP						= False
 	$JADE_BROTHERHOOD_FARM_SETUP			= False
 	$KOURNANS_FARM_SETUP					= False
@@ -1117,6 +1118,8 @@ Func ResetBotsSetups()
 	;$CORSAIRS_FARM_SETUP					= False
 	;$FOLLOWER_SETUP						= False
 	;$GEMSTONES_FARM_SETUP					= False
+	;$GEMSTONE_MARGONITE_FARM_SETUP			= False
+	;$GEMSTONE_STYGIAN_FARM_SETUP			= False
 	;$LIGHTBRINGER_FARM_SETUP				= False
 	;$MINISTERIAL_COMMENDATIONS_FARM_SETUP	= False
 	;$PONGMEI_FARM_SETUP					= False
@@ -1158,6 +1161,11 @@ Func UpdateFarmDescription($Farm)
 			GUICtrlSetData($GUI_Edit_CharacterBuild, $GemstonesFarmSkillbar)
 			GUICtrlSetData($GUI_Edit_HeroBuild, $GemstonesHeroSkillbar)
 			GUICtrlSetData($GUI_Label_FarmInformations, $GemstonesFarmInformations)
+		Case 'Gemstone Margonite'
+			GUICtrlSetData($GUI_Edit_CharacterBuild, $AMeMargoniteSkillBar & '		' & $MeAMargoniteSkillBar & _
+				 						@CRLF & $EMeMargoniteSkillBar & '		' & $RAMargoniteSkillBar)
+			GUICtrlSetData($GUI_Edit_HeroBuild, $MargoniteMonkHeroSkillBar)
+			GUICtrlSetData($GUI_Label_FarmInformations, $GemstoneMargoniteFarmInformations)
 		Case 'Gemstone Stygian'
 			GUICtrlSetData($GUI_Edit_CharacterBuild, $AMeStygianSkillBar & '		' & $MeAStygianSkillBar)
 			GUICtrlSetData($GUI_Label_FarmInformations, $GemstoneStygianFarmInformations)
@@ -1893,6 +1901,8 @@ Func SelectFarmDuration($Farm)
 			Return $FOW_TOC_FARM_DURATION
 		Case 'Gemstones'
 			Return $GEMSTONES_FARM_DURATION
+		Case 'Gemstone Margonite'
+			Return $GEMSTONE_MARGONITE_FARM_DURATION
 		Case 'Gemstone Stygian'
 			Return $GEMSTONE_STYGIAN_FARM_DURATION
 		Case 'Jade Brotherhood'
