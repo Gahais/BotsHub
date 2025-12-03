@@ -73,12 +73,12 @@ Global Const $Gem_SkillsCostsArray	= [15,						10,						0,						0,						0,						
 Global Const $GemSkillsCostsMap = MapFromArrays($Gem_SkillsArray, $Gem_SkillsCostsArray)
 
 Global $GemstonesFightOptions = CloneDictMap($Default_MoveAggroAndKill_Options)
-$GemstonesFightOptions.Item('fightRange') 		= 1500 ; == $RANGE_EARSHOT * 1.5 ; extended range to also target special foes, which can stand far away
-$GemstonesFightOptions.Item('flagHeroesOnFight') = False ; heroes will be flagged before fight to defend the start location
-$GemstonesFightOptions.Item('priorityMobs') 		= True
-$GemstonesFightOptions.Item('skillsCostMap') 	= $GemSkillsCostsMap
-$GemstonesFightOptions.Item('lootInFights') 		= False ; loot only when no foes are in range
-$GemstonesFightOptions.Item('openChests') 		= False ; there are no chests in Ebony Citadel of Mallyx location
+$GemstonesFightOptions.Item('fightRange')			= 1500 ; == $RANGE_EARSHOT * 1.5 ; extended range to also target special foes, which can stand far away
+$GemstonesFightOptions.Item('flagHeroesOnFight')	= False ; heroes will be flagged before fight to defend the start location
+$GemstonesFightOptions.Item('priorityMobs')			= True
+$GemstonesFightOptions.Item('skillsCostMap')		= $GemSkillsCostsMap
+$GemstonesFightOptions.Item('lootInFights')			= False ; loot only when no foes are in range
+$GemstonesFightOptions.Item('openChests')			= False ; there are no chests in Ebony Citadel of Mallyx location
 
 Global Const $AgentID_Zhellix = 15 ; in ebony citadel of Mallyx location, the agent ID of Zhellix is always assigned to 15, when party has 8 members (can be accessed in GWToolbox)
 Global Const $ModelID_Zhellix = 5221 ; unique Model ID of Zhellix NPC, that can be accessed in GWToolbox
@@ -146,7 +146,7 @@ Func SetupTeamGemstonesFarm()
 	Sleep(500 + GetPing())
 	If GetPartySize() <> 8 Then
 		Warn('Could not set up party correctly. Team size different than 8')
-		Return $FAIL
+		Return $FAIL ; Zhellix agent ID will be lower if team size is lower than 8
 	EndIf
 	Return $SUCCESS
 EndFunc

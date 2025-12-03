@@ -202,6 +202,7 @@ Func PongmeiChestFarmLoop($STATUS)
 EndFunc
 
 
+;~ @Unused at the moment
 ;~ Method to check to which place you are the closest to
 Func SkipToPreventBackTracking($X, $Y, $nextX, $nextY)
 	Local $me = GetMyAgent()
@@ -282,7 +283,7 @@ Func GetNPCInTheBack($X, $Y)
 	Local $me = GetMyAgent()
 	Local $myX = DllStructGetData($me, 'X')
 	Local $myY = DllStructGetData($me, 'Y')
-	Local $npcs = GetNPCsInRangeOfAgent($me, $RANGE_SPELLCAST)
+	Local $npcs = GetNPCsInRangeOfAgent($me, Null, $RANGE_SPELLCAST)
 	Local $bestNpc = Null
 	; dot product ranges from -1 (directly behind) to 1 (directly ahead)
 	Local $minDot = 1

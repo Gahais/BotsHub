@@ -127,6 +127,7 @@ last stairs :			X: -690.559143066406, Y: -3769.5224609375 (6.5s)
 DPS spot :				X: -850.958312988281, Y: -3961.001953125 (1s)
 #CE ===========================================================================
 
+
 ;~ Main loop of the Ministerial Commendations farm
 Func MinisterialCommendationsFarm($STATUS)
 	; Need to be done here in case bot comes back from inventory management
@@ -457,7 +458,7 @@ Func RunToKillSpot()
 EndFunc
 
 
-;~ Wait for all ennemies to be balled
+;~ Wait for all enemies to be balled
 Func WaitForPurityBall()
 	Local $deadlock = TimerInit()
 	Local $foesCount = CountFoesInRangeOfAgent(GetMyAgent(), $RANGE_NEARBY)
@@ -525,8 +526,8 @@ Func IsFail()
 		LogIntoFile('Miku died.')
 		Return True
 	ElseIf IsPlayerDead() Then
-		Warn('Player died')
-		LogIntoFile('Character died.')
+		Warn('Player died.')
+		LogIntoFile('Player died.')
 		Return True
 	EndIf
 	Return False

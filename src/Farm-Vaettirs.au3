@@ -76,7 +76,7 @@ Global Const $Vaettir_Elementalist_ElementalLord	= 4
 Global Const $Vaettir_Elementalist_MantraOfEarth	= 5
 
 ; ==== Global variables ====
-Global $VaettirsPlayerProfession = $ID_Assassin ; global variable to remember player's profession in setup
+Global $VaettirsPlayerProfession = $ID_Assassin ; global variable to remember player's profession in setup to avoid creating Dll structs over and over
 Global $ChatStuckTimer = TimerInit()
 Global $Deadlocked = False
 Global $VaettirShadowFormTimer = TimerInit()
@@ -273,7 +273,6 @@ EndFunc
 ;~ Self explanatory
 Func AggroAllMobs()
 	Local $target
-
 	Local Static $vaettirs[31][2] = [ _ ; vaettirs locations
 		_ ; left ball
 		[12496, -22600], _
@@ -355,7 +354,7 @@ Func VaettirsMoveDefending($destinationX, $destinationY)
 			$result = MoveAvoidingBodyBlock($destinationX, $destinationY, $VaettirsMoveOptionsElementalist)
 	EndSwitch
 	If $result == $STUCK Then
-		; When playing as Elementalist or other professions that don't have death's charge or heart of shadow skills, then fight Vaettirs whenever player got surrounded and stuck
+		; When playing as Elementalist or other professions that don't have death's charge or heart of shadow skills, then fight Vaettirs wherever player got surrounded and stuck
 		VaettirsKillSequence()
 		If IsPlayerAlive() Then
 			Info('Looting')
@@ -428,7 +427,8 @@ Func VaettirsCheckShadowForm()
 	; Caution, if playing monk 55hp then protective spirit has to be already on player when casting shadow form, otherwise damage reduction to 0 won't be applied due to specific guild wars mechanics
 	; Furthermore, due to specific guild wars mechanics casting protective spirit multiple times can remove damage reduction to 0 so protective spirit has to casted only once before Shadow Form, otherwise player will die very fast
 	If ($VaettirsPlayerProfession <> $ID_Monk And TimerDiff($VaettirShadowFormTimer) > 20000 And GetEnergy() > 20) Or _
-			($VaettirsPlayerProfession == $ID_Monk And TimerDiff($VaettirShadowFormTimer) > 18000) Then ; 18 seconds because somehow there is 2 seconds delay and buffs have to be cast just in time, so not using 20000
+		($VaettirsPlayerProfession == $ID_Monk And TimerDiff($VaettirShadowFormTimer) > 18000 And GetEnergy() > 30) Then ; 18 seconds because somehow there is 2 seconds delay and buffs have to be cast just in time, so not using 20000
+
 		If $VaettirsPlayerProfession == $ID_Monk Then UseSkillEx($Vaettir_Monk_ProtectiveSpirit)
 		UseSkillEx($Vaettir_DeadlyParadox)
 		UseSkillEx($Vaettir_ShadowForm)
