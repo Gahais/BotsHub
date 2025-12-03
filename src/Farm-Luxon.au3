@@ -96,7 +96,8 @@ Func LuxonFarmSetup()
 	EndIf
 
 	SwitchMode($ID_HARD_MODE)
-	Info('Setup completed')
+	Info('Preparations complete')
+	Return $SUCCESS
 EndFunc
 
 
@@ -201,6 +202,8 @@ Func VanquishMountQinkai()
 	If Not GetAreaVanquished() Then
 		Error('The map has not been completely vanquished.')
 		Return $FAIL
+	Else
+		Info('Map has been fully vanquished.')
+		Return $SUCCESS
 	EndIf
-	Return $SUCCESS
 EndFunc
