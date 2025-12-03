@@ -86,6 +86,7 @@ Func SetupTascaChestFarm()
 	WaitMapLoading($ID_The_Granite_Citadel, 10000, 1000)
 	$TASCA_FARM_SETUP = True
 	Info('Preparations complete')
+	Return $SUCCESS
 EndFunc
 
 
@@ -101,6 +102,7 @@ Func SetupPlayerTascaChestFarm()
     EndIf
 	;ChangeWeaponSet(1) ; change to other weapon slot or comment this line if necessary
 	Sleep(500 + GetPing())
+	Return $SUCCESS
 EndFunc
 
 
@@ -269,7 +271,7 @@ Func TASCADervishRun($X, $Y)
 		Sleep(250)
 		$me = GetMyAgent()
 	WEnd
-	Return $SUCCESS
+	Return IsPlayerAlive()? $SUCCESS : $FAIL
 EndFunc
 
 
