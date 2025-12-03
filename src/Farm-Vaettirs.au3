@@ -250,7 +250,7 @@ Func VaettirsFarmLoop()
 
 	If IsPlayerAlive() Then
 		Info('Looting')
-		PickUpItems(VaettirsStayAlive, DefaultShouldPickItem, $RANGE_EARSHOT)
+		PickUpItems(VaettirsStayAlive)
 	EndIf
 
 	Return RezoneToJagaMoraine()
@@ -359,7 +359,7 @@ Func VaettirsMoveDefending($destinationX, $destinationY)
 		VaettirsKillSequence()
 		If IsPlayerAlive() Then
 			Info('Looting')
-			PickUpItems(VaettirsStayAlive, DefaultShouldPickItem, $RANGE_EARSHOT)
+			PickUpItems(VaettirsStayAlive)
 		EndIf
 		Return IsPlayerAlive()? $SUCCESS : $FAIL
 	Else
