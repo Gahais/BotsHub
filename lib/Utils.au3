@@ -2634,6 +2634,7 @@ Func CreateMobsPriorityMap()
 
 	; Gemstone farm foes model IDs
 	Local Static $Gem_AnurKaya			= 5166
+	Local Static $Gem_AnurDabi			= 5167
 	Local Static $Gem_AnurSu			= 5168
 	Local Static $Gem_AnurKi			= 5169
 	Local Static $Gem_RageTitan			= 5196
