@@ -79,7 +79,7 @@ Global Const $Raptors_StandYourGround	= 6
 Global Const $Raptors_CantTouchThis		= 7
 Global Const $Raptors_BladeturnRefrain	= 8
 
-Global $RaptorsPlayerProfession = $ID_Warrior ; global variable to remember player's profession
+Global $RaptorsPlayerProfession = $ID_Warrior ; global variable to remember player's profession in setup to avoid creating Dll structs over and over
 
 Global $RaptorsMoveOptions = CloneDictMap($Default_MoveDefend_Options)
 $RaptorsMoveOptions.Item('defendFunction')			= Null ; not using any defense skills during movement to preserve energy

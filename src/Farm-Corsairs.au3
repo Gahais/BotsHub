@@ -62,7 +62,7 @@ Global Const $Corsairs_Winnowing		= 1
 Global Const $Corsairs_MysticHealing	= 2
 
 Global $CORSAIRS_FARM_SETUP = False
-Global $Bohseda_Timer
+Global $Bohseda_Timer = Null
 
 ;~ Main method to farm Corsairs
 Func CorsairsFarm($STATUS)

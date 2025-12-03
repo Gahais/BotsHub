@@ -41,7 +41,7 @@ Global Const $MargoniteMonkHeroSkillBar = 'OwITAnHb5Qe/zhxLkpE6+G'
 Global Const $MargoniteHeroPartyID = $ID_Ogden
 Global Const $MargoniteHeroIndex = 1 ; index of first hero party member in team, player index is 0
 Global $MargoniteHeroAgentID = Null ; agent ID that is randomly assigned to hero in exploration areas
-Global $MargonitePlayerProfession = $ID_Mesmer ; global variable to remember player's profession in setup and avoid creating Dll structs over and over during fight
+Global $MargonitePlayerProfession = $ID_Mesmer ; global variable to remember player's profession in setup to avoid creating Dll structs over and over
 
 Global Const $Margonite_DeadlyParadox		= 1
 Global Const $Margonite_ShadowForm			= 2
@@ -233,7 +233,7 @@ Func EnableMargoniteHeroSkills()
 EndFunc
 
 
-;~ exit gate of Anguish outpost by moving into portal that leads into farming location - City of Torc'qua
+;~ Exit gate of Anguish outpost by moving into portal that leads into farming location - City of Torc'qua
 Func GoToCityOfTorcqua()
 	Info('Moving to City of Torc''qua')
 	; Unfortunately all 4 gemstone farm explorable locations have the same map ID as Gate of Anguish outpost, so it is hard to tell if player left the outpost
@@ -411,7 +411,7 @@ Func MargoniteMoveDefending($destinationX, $destinationY)
 			$result = MoveAvoidingBodyBlock($destinationX, $destinationY, $MargoniteMoveOptionsElementalist)
 	EndSwitch
 	If $result == $STUCK Then
-		; When playing as Elementalist or other professions that don't have death's charge or heart of shadow skills, then fight Margonites whenever player got surrounded and stuck
+		; When playing as Elementalist or other professions that don't have death's charge or heart of shadow skills, then fight Margonites wherever player got surrounded and stuck
 		If KillMargonites() == $FAIL Then Return $FAIL
 		RandomSleep(1000 + GetPing())
 		If IsPlayerAlive() Then
