@@ -79,6 +79,7 @@
 #include 'src/Farm-SpiritSlaves.au3'
 #include 'src/Farm-SunspearArmor.au3'
 #include 'src/Farm-Tasca.au3'
+#include 'src/Farm-Underworld.au3'
 #include 'src/Farm-Vaettirs.au3'
 #include 'src/Farm-Vanguard.au3'
 #include 'src/Farm-Voltaic.au3'
@@ -116,7 +117,7 @@ Global $DISTRICT_NAME = 'Random'
 Global $BAGS_COUNT = 5
 Global $INVENTORY_SPACE_NEEDED = 5
 
-Global $AVAILABLE_FARMS = 'Boreal|Corsairs|Dragon Moss|Eden Iris|Feathers|Follow|FoW|FoW Tower of Courage|Froggy|Gemstones|Gemstone Margonite|Gemstone Stygian|Gemstone Torment|Glint Challenge|Jade Brotherhood|Kournans|Kurzick|Lightbringer|Lightbringer 2|Luxon|Mantids|Ministerial Commendations|Nexus Challenge|Norn|OmniFarm|Pongmei|Raptors|SoO|SpiritSlaves|Sunspear Armor|Tasca|Vaettirs|Vanguard|Voltaic|War Supply Keiran|Storage|Tests|Dynamic execution'
+Global $AVAILABLE_FARMS = 'Boreal|Corsairs|Dragon Moss|Eden Iris|Feathers|Follow|FoW|FoW Tower of Courage|Froggy|Gemstones|Gemstone Margonite|Gemstone Stygian|Gemstone Torment|Glint Challenge|Jade Brotherhood|Kournans|Kurzick|Lightbringer|Lightbringer 2|Luxon|Mantids|Ministerial Commendations|Nexus Challenge|Norn|OmniFarm|Pongmei|Raptors|SoO|SpiritSlaves|Sunspear Armor|Tasca|Underworld|Vaettirs|Vanguard|Voltaic|War Supply Keiran|Storage|Tests|Dynamic execution'
 Global $AVAILABLE_DISTRICTS = '|Random|America|China|English|French|German|International|Italian|Japan|Korea|Polish|Russian|Spanish'
 Global $AVAILABLE_BAG_COUNTS = '|1|2|3|4|5'
 Global $AVAILABLE_HEROES = '|Norgu|Goren|Tahlkora|Master of Whispers|Acolyte Jin|Koss|Dunkoro|Acolyte Sousuke|Melonni|Zhed Shadowhoof|General Morgahn|Margrid the Sly|Zenmai|Olias|Razah|MOX|Keiran Thackeray|Jora|Pyre Fierceshot|Anton|Livia|Hayda|Kahmu|Gwen|Xandra|Vekk|Ogden|Miku|ZeiRi'
@@ -1065,6 +1066,9 @@ Func RunFarmLoop($Farm)
 		Case 'Tasca'
 			$INVENTORY_SPACE_NEEDED = 5
 			$result = TascaChestFarm($STATUS)
+		Case 'Underworld'
+			$INVENTORY_SPACE_NEEDED = 5
+			$result = UnderworldFarm($STATUS)
 		Case 'Vaettirs'
 			$INVENTORY_SPACE_NEEDED = 5
 			$result = VaettirsFarm($STATUS)
@@ -1121,6 +1125,7 @@ Func ResetBotsSetups()
 	$SOO_FARM_SETUP							= False
 	$SPIRIT_SLAVES_FARM_SETUP				= False
 	$TASCA_FARM_SETUP						= False
+	$UW_FARM_SETUP							= False
 	; Those don't need to be reset - party didn't change, build didn't change, and there is no need to refresh portal
 	; BUT those bots MUST tp to the correct map on every loop
 	;$CORSAIRS_FARM_SETUP					= False
@@ -1228,6 +1233,9 @@ Func UpdateFarmDescription($Farm)
 		Case 'Tasca'
 			GUICtrlSetData($GUI_Edit_CharacterBuild, $TascaDervishChestRunnerSkillbar & '		' & $TascaAssassinChestRunnerSkillbar)
 			GUICtrlSetData($GUI_Label_FarmInformations, $TascaChestRunInformations)
+		Case 'Underworld'
+			GUICtrlSetData($GUI_Edit_CharacterBuild, $TascaDervishChestRunnerSkillbar)
+			GUICtrlSetData($GUI_Label_FarmInformations, $UnderworldFarmInformations)
 		Case 'Vaettirs'
 			GUICtrlSetData($GUI_Edit_CharacterBuild, $AMeVaettirsFarmerSkillbar & '		' & $MeAVaettirsFarmerSkillbar & _
 				 						@CRLF & $MoAVaettirsFarmerSkillbar & '		' & $EMeVaettirsFarmerSkillbar)
@@ -1958,6 +1966,8 @@ Func SelectFarmDuration($Farm)
 			Return $SUNSPEAR_ARMOR_FARM_DURATION
 		Case 'Tasca'
 			Return $TASCA_FARM_DURATION
+		Case 'Underworld'
+			Return $UW_FARM_DURATION
 		Case 'Vaettirs'
 			Return $VAETTIRS_FARM_DURATION
 		Case 'Vanguard'
