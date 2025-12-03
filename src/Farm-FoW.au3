@@ -70,6 +70,7 @@ Func SetupFoWFarm()
 	SwitchToHardModeIfEnabled()
 	$FOW_FARM_SETUP = True
 	Info('Preparations complete')
+	Return $SUCCESS
 EndFunc
 
 
@@ -348,6 +349,7 @@ Func TheTempleOfWar()
 	RandomSleep(GetPing() + 750)
 	Dialog(0x80D301)
 	RandomSleep(GetPing() + 750)
+	Return $SUCCESS
 EndFunc
 
 
@@ -392,6 +394,7 @@ Func TheSpiderCave_and_FissureShore()
 	MoveTo(-6700, -11750)
 	MoveTo(-1600, -8750)
 	MoveTo(1000, -11200)
+	Return $SUCCESS
 EndFunc
 
 
@@ -405,6 +408,7 @@ Func LakeOfFire()
 	MoveAggroAndKillInRange(20500, -12400, '6', $RANGE_EARSHOT)
 	MoveAggroAndKillInRange(18300, -14000, '7', $RANGE_EARSHOT)
 	MoveAggroAndKillInRange(19500, -15000, '8', $RANGE_EARSHOT)
+	Return $SUCCESS
 EndFunc
 
 
@@ -441,6 +445,7 @@ Func TowerOfStrengh()
 		Sleep(1000)
 		$me = GetMyAgent()
 	WEnd
+	Return $SUCCESS
 EndFunc
 
 
@@ -486,6 +491,7 @@ Func BurningForest()
 	FlagMoveAggroAndKill(1600, 12300, '2')
 	KillShardWolf()
 	FlagMoveAggroAndKill(-10750, 6300, '3')
+	Return $SUCCESS
 EndFunc
 
 
@@ -532,6 +538,7 @@ Func ForestOfTheWailingLord()
 	RandomSleep(GetPing() + 750)
 	Dialog(0x80CD01)
 	RandomSleep(GetPing() + 750)
+	Return $SUCCESS
 EndFunc
 
 
@@ -578,6 +585,7 @@ Func GriffonRun()
 	RandomSleep(GetPing() + 750)
 	Dialog(0x80CD07)
 	RandomSleep(GetPing() + 750)
+	Return $SUCCESS
 EndFunc
 
 
@@ -620,6 +628,7 @@ Func TempleLoot()
 	RandomSleep(GetPing() + 750)
 	Dialog(0x80D307)
 	RandomSleep(GetPing() + 750)
+	Return $SUCCESS
 EndFunc
 
 
@@ -666,4 +675,5 @@ Func KillShardWolf()
 		Local $shardWolf = $foes[0]
 		MoveAggroAndKill(DllStructGetData($shardWolf, 'X'), DllStructGetData($shardWolf, 'Y'))
 	EndIf
+	Return $SUCCESS
 EndFunc
