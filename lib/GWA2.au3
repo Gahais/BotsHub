@@ -3257,8 +3257,8 @@ Func GetAgentExists($agentID)
 EndFunc
 
 
+;~ FIXME: this function might not be working correctly
 ;~ Returns the target of an agent.
-;~ Caution, this function might not be working correctly
 Func GetTarget($agent)
 	Return MemoryRead(GetValue('TargetLogBase') + 4 * DllStructGetData($agent, 'ID'))
 EndFunc
@@ -3941,8 +3941,8 @@ Func GetEffectTimeRemaining($effect, $heroIndex = 0)
 EndFunc
 
 
+;~ FIXME: this function might not be working correctly
 ;~ Returns the timestamp used for effects and skills (milliseconds).
-;~ Caution, this function might not be working correctly
 Func GetSkillTimer()
 	Return MemoryRead($skillTimer, 'long')
 EndFunc
@@ -4088,8 +4088,8 @@ Func GetMapRegionType($mapID = 0)
 EndFunc
 
 
+;~ FIXME: this function might not be working correctly
 ;~ Returns current load-state.
-;~ Caution, this function might not be working correctly
 Func GetMapLoading()
 	Return MemoryRead($mapLoading)
 EndFunc
