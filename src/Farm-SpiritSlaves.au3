@@ -62,25 +62,7 @@ Global Const $skillCostsMap = MapFromArrays($SS_SkillsArray, $SS_SkillsCostsArra
 Func SpiritSlavesFarm($STATUS)
 	; Need to be done here in case bot comes back from inventory management
 	If Not $SPIRIT_SLAVES_FARM_SETUP And SetupSpiritSlavesFarm() == $FAIL Then Return $PAUSE
-
-	UseConsumable($ID_Slice_of_Pumpkin_Pie)
-
-	Info('Killing group 1 @ North')
-	If FarmNorthGroup() == $FAIL Then Return RestartAfterDeath()
-	Info('Killing group 2 @ South')
-	If FarmSouthGroup() == $FAIL Then Return RestartAfterDeath()
-	Info('Killing group 3 @ South')
-	If FarmSouthGroup() == $FAIL Then Return RestartAfterDeath()
-	Info('Killing group 4 @ North')
-	If FarmNorthGroup() == $FAIL Then Return RestartAfterDeath()
-	Info('Killing group 5 @ North')
-	If FarmNorthGroup() == $FAIL Then Return RestartAfterDeath()
-
-	Info('Moving out of the zone and back again')
-	Move(-7735, -8380)
-	RezoneToTheShatteredRavines()
-
-	Return $SUCCESS
+	Return SpiritSlavesFarmLoop()
 EndFunc
 
 
@@ -119,8 +101,8 @@ EndFunc
 
 
 Func RunToShatteredRavines()
-	; Exiting to Jokos Domain
 	TravelToOutpost($ID_Bone_Palace, $DISTRICT_NAME)
+	; Exiting to Joko's Domain
 	MoveTo(-14520, 6009)
 	Move(-14820, 3400)
 	RandomSleep(1000)
@@ -173,6 +155,29 @@ Func RunToShatteredRavines()
 	; Hurry up before dying
 	MoveTo(-9714, -10767)
 	MoveTo(-7919, -10530)
+	Return $SUCCESS
+EndFunc
+
+
+;~ Farm loop
+Func SpiritSlavesFarmLoop()
+	UseConsumable($ID_Slice_of_Pumpkin_Pie)
+
+	Info('Killing group 1 @ North')
+	If FarmNorthGroup() == $FAIL Then Return RestartAfterDeath()
+	Info('Killing group 2 @ South')
+	If FarmSouthGroup() == $FAIL Then Return RestartAfterDeath()
+	Info('Killing group 3 @ South')
+	If FarmSouthGroup() == $FAIL Then Return RestartAfterDeath()
+	Info('Killing group 4 @ North')
+	If FarmNorthGroup() == $FAIL Then Return RestartAfterDeath()
+	Info('Killing group 5 @ North')
+	If FarmNorthGroup() == $FAIL Then Return RestartAfterDeath()
+
+	Info('Moving out of the zone and back again')
+	Move(-7735, -8380)
+	RezoneToTheShatteredRavines()
+
 	Return $SUCCESS
 EndFunc
 

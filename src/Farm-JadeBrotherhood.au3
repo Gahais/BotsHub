@@ -101,7 +101,7 @@ Func SetupJadeBrotherhoodFarm()
 	RandomSleep(1000)
 	WaitMapLoading($ID_The_Marketplace)
 	$JADE_BROTHERHOOD_FARM_SETUP = True
-	Info('Jade Brotherhood farm set up')
+	Info('Preparations complete')
 	Return $SUCCESS
 EndFunc
 

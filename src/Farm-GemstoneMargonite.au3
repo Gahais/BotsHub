@@ -156,9 +156,9 @@ Func SetupGemstoneMargoniteFarm()
 	Sleep(500 + GetPing())
 	SetDisplayedTitle($ID_Lightbringer_Title)
 	Sleep(500 + GetPing())
-	If SetupPlayerMargoniteFarm() == $FAIL Then Return $FAIL
-    If SetupTeamMargoniteFarm() == $FAIL Then Return $FAIL
-    SetupHeroMargoniteFarm()
+	If SetupPlayerMargoniteFarm() == $FAIL Or _
+		SetupTeamMargoniteFarm() == $FAIL Then Return $FAIL
+	SetupHeroMargoniteFarm()
 	Sleep(500 + GetPing())
 	$GEMSTONE_MARGONITE_FARM_SETUP = True
 	Info('Preparations complete')
@@ -389,7 +389,7 @@ Func MargoniteMoveDefending($destinationX, $destinationY)
 			$result = MoveAvoidingBodyBlock($destinationX, $destinationY, $MargoniteMoveOptionsElementalist)
 	EndSwitch
 	If $result == $STUCK Then
-		; When playing as Elementalist or other professions that don't have death's charge or heart of shadow skills, then fight Margonites whenever player got surrounded and stuck
+		; When playing as Elementalist or other professions that don't have death's charge or heart of shadow skills, then fight Margonites wherever player got surrounded and stuck
 		If KillMargonites() == $FAIL Then Return $FAIL
 		RandomSleep(1000 + GetPing())
 		If IsPlayerAlive() Then
