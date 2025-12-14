@@ -81,13 +81,13 @@ Func ManageFactionPointsLuxonFarm()
 			RandomSleep(550)
 		EndIf
 		RandomSleep(500)
-		DistrictTravel($ID_Aspenwood_Gate_Luxon, $DISTRICT_NAME)
+		TravelToOutpost($ID_Aspenwood_Gate_Luxon, $DISTRICT_NAME)
 	EndIf
 EndFunc
 
 
 Func CheckGoldLuxonFarm()
-	If GetMapID() <> $ID_Aspenwood_Gate_Luxon Then TravelToOutpost($ID_Aspenwood_Gate_Luxon, $DISTRICT_NAME)
+	TravelToOutpost($ID_Aspenwood_Gate_Luxon, $DISTRICT_NAME)
 	If GetGoldCharacter() < 100 AND GetGoldStorage() > 100 Then
 		Info('Withdrawing gold for shrines benediction')
 		RandomSleep(250)
@@ -100,7 +100,7 @@ EndFunc
 ;~ Setup for the luxon points farm
 Func LuxonFarmSetup()
 	Info('Setting up farm')
-	If GetMapID() <> $ID_Aspenwood_Gate_Luxon Then TravelToOutpost($ID_Aspenwood_Gate_Luxon, $DISTRICT_NAME)
+	TravelToOutpost($ID_Aspenwood_Gate_Luxon, $DISTRICT_NAME)
 
 	SetupPlayerLuxonFarm()
 	SetupTeamLuxonFarm()
@@ -141,7 +141,7 @@ EndFunc
 
 ;~ Move out of outpost into Mount Qinkai
 Func GoToMountQinkai()
-	If GetMapID() <> $ID_Aspenwood_Gate_Luxon Then TravelToOutpost($ID_Aspenwood_Gate_Luxon, $DISTRICT_NAME)
+	TravelToOutpost($ID_Aspenwood_Gate_Luxon, $DISTRICT_NAME)
 	While GetMapID() <> $ID_Mount_Qinkai
 		Info('Moving to Mount Qinkai')
 		MoveTo(-4268, 11628)

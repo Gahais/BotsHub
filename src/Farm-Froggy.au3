@@ -51,7 +51,7 @@ EndFunc
 ;~ Froggy farm setup
 Func SetupFroggyFarm()
 	Info('Setting up farm')
-	If GetMapID() <> $ID_Gadds_Camp Then TravelToOutpost($ID_Gadds_Camp, $DISTRICT_NAME)
+	TravelToOutpost($ID_Gadds_Camp, $DISTRICT_NAME)
 
 	SetupPlayerFroggyFarm()
 	SetupTeamFroggyFarm()
@@ -94,7 +94,7 @@ EndFunc
 
 
 Func RunToBogroot()
-	If GetMapID() <> $ID_Gadds_Camp Then TravelToOutpost($ID_Gadds_Camp, $DISTRICT_NAME)
+	TravelToOutpost($ID_Gadds_Camp, $DISTRICT_NAME)
 	ResetFailuresCounter()
 	Info('Making way to portal')
 	MoveTo(-10018, -21892)
