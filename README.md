@@ -42,25 +42,32 @@ To use it:
 - Missing Daughter Jade Brotherhood farm (Q8, jade bracelets)
 - Fish in a Barrel kournans farm (Q8, runes)
 - Spirit Slaves farm (Q8, dust, bones)
+- Minotaurs farm (materials)
 - Auspicious Beginnings farm (War Supplies, festive items, gold, Vanguard points)
 - A Chance Encounter farm (Ministerial Commendations, faction skins)
 - Eden Iris farm (iris)
 - Nexus Challenge (Mysterious armor hero pieces)
 - Dajkah Inlet Challenge (Sunspear armor hero pieces)
+- Glint's Challenge (Cloth of Brotherhood/hero armor, Destroyer cores, gold items)
 ### Vanquishes / Titles
 - Ferndale vanquish (Kurzick faction points)
 - Mount Qinkai vanquish (Luxon faction points)
 - Sulfurous Wastes farm (Sunspear and Lightbringer points)
 - Mirror of Lyss farm (Lightbringer points)
+- Magus Stones farm (Asura points)
 - Varajar Fells farm (Norn points)
 - Dalada Uplands farm (Vanguard points)
 ### Dungeons/Elite zones
 - Bogroot dungeon farm (Froggy)
 - SoO dungeon farm (Dragon Bone Staff)
 - Slaver's Exile dungeon farm (Voltaic Spears)
-- FoW farm (Obsidian shard, Obsidian Edge, shadow weapons)
-- DoA farm (Gemstones)
+- FoW farm (Obsidian Shards, Obsidian Edge, shadow weapons)
+- FoW Tower of Courage farm (Obsidian Shards, dust)
+- DoA farm (Gemstones, gold items)
+- City of Torc'qua farm (Margonite Gemstones)
+- Ravenheart Gloom farm (Torment Gemstones)
 - Stygian Veil farm (Stygian Gemstones)
+- Underworld farm (Globs of Ectoplasm, gold items)
 ### Chest runs
 - Boreal chest run (glacial blades)
 - Pongmei chest run (faction skins, Q8)
@@ -144,7 +151,7 @@ Feel free to create and add more bots; it’s pretty simple!
 - 💡🕓 **Improve the Pongmei chest farm with Tasca chest farm capabilities**
 - 🧠💭 **Cathedral of Flames farm bot** - 2 requests
 - 🧠💭 **Kilroy bot** - 1 request
-- 🧠💭 **Asura/Dwarf title farm bot** - 1 request
+- 🧠💭 **Dwarf title farm bot** - 1 request
 - 🧠💭 **LDOA bot** - 1 request
 - 🧠💭 **Improve crash recovery**
 
