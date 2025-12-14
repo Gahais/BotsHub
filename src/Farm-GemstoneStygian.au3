@@ -205,7 +205,6 @@ EndFunc
 
 Func GemstoneStygianFarmLoop()
 	Sleep(2000)
-	If IsPlayerDead() Then Return $FAIL
 	Info('Starting Farm')
 	$GemstoneStygianFarmTimer = TimerInit() ; starting run timer, if run lasts longer than max time then bot must have gotten stuck and fail is returned to restart run
 
@@ -221,7 +220,6 @@ Func GemstoneStygianFarmLoop()
 		Dialog(0x85)
 		Sleep(500)
 	EndIf
-	If IsPlayerDead() Then Return $FAIL
 	Info('Taking Quest')
 	GoNearestNPCToCoords(7188, -9108)
 	Sleep(1000)
@@ -394,7 +392,6 @@ EndFunc
 
 
 Func KillStygianMobsUsingWastrelSkills()
-	If IsPlayerDead() Then Return $FAIL
 	Local $me, $target, $distance
 
 	While CountFoesInRangeOfAgent(GetMyAgent(), $Stygians_Range_Long) > 0 And IsPlayerAlive()
@@ -431,7 +428,7 @@ Func StygianCheckSFBuffs()
 		UseSkillEx($Stygian_DeadlyParadox)
 		UseSkillEx($Stygian_ShadowForm)
 	EndIf
-	Return IsPlayerAlive()? $SUCCESS : $FAIL
+	Return $SUCCESS
 EndFunc
 
 
@@ -439,7 +436,7 @@ Func StygianCheckRunBuffs()
 	If IsPlayerDead() Then Return $FAIL
 	If IsRecharged($Stygian_DwarvenStability) And GetEnergy() > 5 Then UseSkillEx($Stygian_DwarvenStability)
 	If IsRecharged($Stygian_Dash) And GetEnergy() > 5 Then UseSkillEx($Stygian_Dash)
-	Return IsPlayerAlive()? $SUCCESS : $FAIL
+	Return $SUCCESS
 EndFunc
 
 
@@ -451,6 +448,10 @@ Func HideToLoot()
 	RunStygianFarm(10575, -8170)
 	RunStygianFarm(12853, -9936)
 	RandomSleep(500)
-	If IsPlayerAlive() Then PickUpItems(StygianCheckSFBuffs, DefaultShouldPickItem, $Stygians_Range_Long)
-	Return IsPlayerAlive()? $SUCCESS : $FAIL
+	If IsPlayerAlive() Then
+		PickUpItems(StygianCheckSFBuffs, DefaultShouldPickItem, $Stygians_Range_Long)
+		Return $SUCCESS
+	Else
+		Return $FAIL
+	EndIf
 EndFunc
