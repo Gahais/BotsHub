@@ -2275,13 +2275,7 @@ Func MoveAvoidingBodyBlock($destinationX, $destinationY, $options = $Default_Mov
 				Move($myX + $offsetX , $myY + $offsetY, 0) ; 0 = no random, because random offset is already calculated
 				RandomSleep(GetPing())
 			EndIf
-			; Checking if no foes are in range to use /stuck only when there are no foes in range like when rubberbanding or on some obstacles
-			If Not IsPlayerMoving() And CountFoesInRangeOfAgent(GetMyAgent(), $RANGE_NEARBY) == 0 And TimerDiff($chatStuckTimer) > 10000 Then ; use a timer to avoid spamming /stuck
-				Warn('Sending /stuck')
-				SendChat('stuck', '/')
-				$chatStuckTimer = TimerInit()
-				RandomSleep(500 + GetPing())
-			EndIf
+			CheckAndSendStuckCommand()
 		Else
 			Move($destinationX, $destinationY, $randomFactor)
 			$blocked = 0 ; reset of block count if player got unstuck
@@ -2302,6 +2296,24 @@ EndFunc
 
 ;~ Detect if player is rubberbanding
 Func IsPlayerRubberBanding()
+EndFunc
+
+
+;~ Send /stuck - don't overuse, otherwise there can be a BAN !
+Func CheckAndSendStuckCommand()
+	Local Static $chatStuckTimer = TimerInit()
+	Local $stuckInterval = 10000 ; 10 seconds interval between stuck commands
+
+	; Use a timer to avoid spamming /stuck, because spamming stuck can result in being flagged, which can result in a ban
+	; Checking if no foes are in range to use /stuck only when rubberbanding or on some obstacles, there shouldn't be any enemies around the character then
+	If Not IsPlayerMoving() And CountFoesInRangeOfAgent(GetMyAgent(), $RANGE_NEARBY) == 0 And TimerDiff($chatStuckTimer) > $stuckInterval Then
+		Warn('Sending /stuck')
+		SendChat('stuck', '/')
+		$chatStuckTimer = TimerInit()
+		RandomSleep(500 + GetPing())
+		Return True
+	EndIf
+	Return False
 EndFunc
 
 
