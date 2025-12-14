@@ -2233,6 +2233,45 @@ Func ChangeWeaponSet($weaponSet)
 EndFunc
 
 
+Func GetCastTimeModifier($effects, $usedSkill)
+	Local $skillID = DllStructGetData($usedSkill, 'ID')
+	Local $effectID = 0
+	Local $castTime = 1
+	For $effect in $effects
+		$effectID = DllStructGetData($effect, 'EffectId')
+		; consumables effects
+		If $effectID == $ID_Essence_of_Celerity_effect Then $castTime = 0.80 * $castTime
+		If $effectID == $ID_Pie_Induced_Ecstasy Then $castTime = 0.85 * $castTime
+		If $effectID == $ID_Blue_Rock_Candy_Rush Then $castTime = 0.80 * $castTime
+		If $effectID == $ID_Green_Rock_Candy_Rush Then $castTime = 0.85 * $castTime
+		If $effectID == $ID_Red_Rock_Candy_Rush Then $castTime = 0.75 * $castTime
+		; skills shortening cast time
+		If $effectID == $ID_Deadly_Paradox And $skillID == $ID_Shadow_Form Then $castTime = 0.667 * $castTime
+		If $effectID == $ID_Glyph_of_Sacrifice Then $castTime = 0
+		If $effectID == $ID_Glyph_of_Essence Then $castTime = 0
+		If $effectID == $ID_Signet_of_Mystic_Speed Then $castTime = 0
+		If $effectID == $ID_Mindbender Then $castTime = 0.80 * $castTime
+		If $effectID == $ID_Time_Ward Or $effectID == $ID_Over_the_Limit Then
+			Local $attributeLevel = DllStructGetData($effect, 'AttributeLevel')
+			; Below equation converts attribute level of Time Ward or Over the Limit effect into shorter cast time, e.g. 80% for attribute levels 14,15,16
+			Local $castTimeReduction = 1 - ((15 + Floor(($attributeLevel + 1) / 3)) / 100)
+			$castTime = $castTimeReduction * $castTime
+		EndIf
+		; hexes lengthening cast time
+		If $effectID == $ID_Arcane_Conundrum Then $castTime = 2 * $castTime
+		If $effectID == $ID_Migraine Then $castTime = 2 * $castTime
+		If $effectID == $ID_Stolen_Speed Then $castTime = 2 * $castTime
+		If $effectID == $ID_Shared_Burden Then $castTime = 2 * $castTime
+		If $effectID == $ID_Frustration Then $castTime = 2 * $castTime
+		If $effectID == $ID_Confusing_Images Then $castTime = 2 * $castTime
+		If $effectID == $ID_Sum_of_All_Fears Then $castTime = 1.5 * $castTime
+		; other
+		If $effectID == $ID_Dazed Then $castTime = 2 * $castTime
+	Next
+	Return $castTime
+EndFunc
+
+
 ;~ Use a skill, doesn't wait for the skill to be done
 Func UseSkill($skillSlot, $target, $callTarget = False)
 	If $target == Null Or $target == 0 Or $target == -2 Then $target = GetMyAgent()
