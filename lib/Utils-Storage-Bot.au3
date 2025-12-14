@@ -84,7 +84,7 @@ Func ActiveInventoryManagement()
 	If GUICtrlRead($GUI_Checkbox_StoreUnidentifiedGoldItems) == $GUI_CHECKED Then StoreItemsInXunlaiStorage(IsUnidentifiedGoldItem)
 	If GUICtrlRead($GUI_Checkbox_SortItems) == $GUI_CHECKED Then SortInventory()
 	If GUICtrlRead($GUI_Checkbox_IdentifyAllItems) == $GUI_CHECKED And HasUnidentifiedItems() Then
-		If GetMapID() <> $ID_Eye_of_the_North Then DistrictTravel($ID_Eye_of_the_North, $DISTRICT_NAME)
+		TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
 		IdentifyAllItems()
 	EndIf
 	If GUICtrlRead($GUI_Checkbox_CollectData) == $GUI_CHECKED Then
@@ -96,7 +96,7 @@ Func ActiveInventoryManagement()
 		DisconnectFromDatabase()
 	EndIf
 	If GUICtrlRead($GUI_Checkbox_SalvageItems) == $GUI_CHECKED Then
-		If GetMapID() <> $ID_Eye_of_the_North Then DistrictTravel($ID_Eye_of_the_North, $DISTRICT_NAME)
+		TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
 		SalvageAllItems()
 		If $BAGS_COUNT == 5 Then
 			If MoveItemsOutOfEquipmentBag() > 0 Then SalvageAllItems()
@@ -106,14 +106,14 @@ Func ActiveInventoryManagement()
 		;SalvageMaterials()
 	EndIf
 	If GUICtrlRead($GUI_Checkbox_SellMaterials) == $GUI_CHECKED And HasMaterials() Then
-		If GetMapID() <> $ID_Eye_of_the_North Then DistrictTravel($ID_Eye_of_the_North, $DISTRICT_NAME)
+		TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
 		; If we have more than 60k, we risk running into the situation we can't sell because we're too rich, so we store some in xunlai
 		If GetGoldCharacter() > 60000 Then BalanceCharacterGold(10000)
 		If HasBasicMaterials() Then SellMaterialsToMerchant()
 		If HasRareMaterials() Then SellRareMaterialsToMerchant()
 	EndIf
 	If GUICtrlRead($GUI_Checkbox_SellItems) == $GUI_CHECKED Then
-		If GetMapID() <> $ID_Eye_of_the_North Then DistrictTravel($ID_Eye_of_the_North, $DISTRICT_NAME)
+		TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
 		; If we have more than 60k, we risk running into the situation we can't sell because we're too rich, so we store some in xunlai
 		If GetGoldCharacter() > 60000 Then BalanceCharacterGold(10000)
 		SellItemsToMerchant()
@@ -146,7 +146,7 @@ Func PassiveInventoryManagement()
 
 	If GetInventoryKitCount($superiorIdentificationKits) < 1 Or GetInventoryKitCount($salvageKits) < 1 Then
 		Info('Buying kits for passive inventory management')
-		If GetMapID() <> $ID_Eye_of_the_North Then DistrictTravel($ID_Eye_of_the_North, $DISTRICT_NAME)
+		TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
 		; Since we are in EOTN, might as well clear inventory
 		ActiveInventoryManagement()
 		If 4 - $identificationKitsCount > 0 Then BuySuperiorIdentificationKitInEOTN(4 - $identificationKitsCount)
@@ -559,7 +559,7 @@ EndFunc
 
 ;~ Sell general items to trader
 Func SellItemsToMerchant($shouldSellItem = DefaultShouldSellItem, $dryRun = False)
-	If GetMapID() <> $ID_Eye_of_the_North Then DistrictTravel($ID_Eye_of_the_North, $DISTRICT_NAME)
+	TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
 	Info('Moving to merchant')
 	Local $merchant = GetNearestNPCToCoords(-2700, 1075)
 	UseCitySpeedBoost()
@@ -622,7 +622,7 @@ EndFunc
 
 ;~ Sell materials to materials merchant in EOTN
 Func SellMaterialsToMerchant($shouldSellItem = DefaultShouldSellMaterial)
-	If GetMapID() <> $ID_Eye_of_the_North Then DistrictTravel($ID_Eye_of_the_North, $DISTRICT_NAME)
+	TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
 	Info('Moving to materials merchant')
 	Local $materialMerchant = GetNearestNPCToCoords(-1850, 875)
 	UseCitySpeedBoost()
@@ -658,7 +658,7 @@ EndFunc
 
 ;~ Sell rare materials to rare materials merchant in EOTN
 Func SellRareMaterialsToMerchant($shouldSellItem = DefaultShouldSellRareMaterial)
-	If GetMapID() <> $ID_Eye_of_the_North Then DistrictTravel($ID_Eye_of_the_North, $DISTRICT_NAME)
+	TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
 	Info('Moving to rare materials merchant')
 	Local $rareMaterialMerchant = GetNearestNPCToCoords(-2100, 1125)
 	UseCitySpeedBoost()
@@ -694,7 +694,7 @@ EndFunc
 
 ;~ Buy rare material from rare materials merchant in EOTN
 Func BuyRareMaterialFromMerchant($materialModelID, $amount)
-	If GetMapID() <> $ID_Eye_of_the_North Then DistrictTravel($ID_Eye_of_the_North, $DISTRICT_NAME)
+	TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
 	Info('Moving to rare materials merchant')
 	Local $rareMaterialMerchant = GetNearestNPCToCoords(-2100, 1125)
 	UseCitySpeedBoost()
@@ -717,7 +717,7 @@ EndFunc
 ;~ Possible issue if you provide a very low poorThreshold and the price of an item hike up enough to reduce your money to less than 0
 ;~ So please only use with $poorThreshold > 5k
 Func BuyRareMaterialFromMerchantUntilPoor($materialModelID, $poorThreshold = 20000, $backupMaterialModelID = Null)
-	If GetMapID() <> $ID_Eye_of_the_North Then DistrictTravel($ID_Eye_of_the_North, $DISTRICT_NAME)
+	TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
 	If CountSlots(1, 4) == 0 Then
 		Warn('No room in inventory to buy rare materials, tick some checkboxes to clear inventory')
 		Return

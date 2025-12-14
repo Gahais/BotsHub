@@ -141,10 +141,7 @@ EndFunc
 Func TravelToOutpost($outpostId, $district = 'Random', $maxWaitTime = 10000)
 	Local $startLocation = GetMapID()
 	Local $outpostName = $LocationMapNames[$outpostId]
-	If GetMapID() == $outpostId Then
-		Warn('Player is already in ' & $outpostName & ' (outpost)')
-		Return $SUCCESS
-	Endif
+	If GetMapID() == $outpostId Then Return $SUCCESS
 	Info('Travelling to ' & $outpostName & ' (outpost)')
 	DistrictTravel($outpostId, $district)
 	Local $travelTimer = TimerInit()
@@ -154,9 +151,8 @@ Func TravelToOutpost($outpostId, $district = 'Random', $maxWaitTime = 10000)
 	If GetMapID() <> $outpostId Then
 		Warn('Player may not have access to ' & $outpostName & ' (outpost)')
 		Return $FAIL
-	Else
-		Return $SUCCESS
 	EndIf
+	Return $SUCCESS
 EndFunc
 
 
@@ -1184,12 +1180,12 @@ EndFunc
 ;~ FIXME: error if total price is superior to 100k, add a loop for that
 ;~ FIXME: error if amount is superior to 250, add another loop for that
 Func BuyInEOTN($itemID, $itemPosition, $itemPrice, $amount = 1, $stackable = False)
+	TravelToOutpost($ID_Eye_of_the_North)
 	If GetGoldCharacter() < $amount * $itemPrice And GetGoldStorage() > $amount * $itemPrice - 1 Then
 		WithdrawGold($amount * $itemPrice)
 		RandomSleep(500)
 	EndIf
 
-	If GetMapID() <> $ID_Eye_of_the_North Then DistrictTravel($ID_Eye_of_the_North, $DISTRICT_NAME)
 	Info('Moving to merchant')
 	Local $merchant = GetNearestNPCToCoords(-2700, 1075)
 	UseCitySpeedBoost()
