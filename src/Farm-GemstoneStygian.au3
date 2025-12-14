@@ -217,10 +217,13 @@ Func GemstoneStygianFarmLoop()
 		Sleep(500)
 	EndIf
 	Info('Taking Quest')
-	GoNearestNPCToCoords(7188, -9108)
-	Sleep(1000)
-	Dialog(0x82E601)
-	Sleep(1000)
+	Local $TimerQuest = TimerInit()
+	While GetQuestByID(0x2E6) == Null And TimerDiff($TimerQuest) < 10000
+		GoNearestNPCToCoords(7188, -9108)
+		Sleep(1000)
+		Dialog(0x82E601)
+		Sleep(1000)
+	WEnd
 	If GetQuestByID(0x2E6) == Null Then Return $FAIL
 
 	Switch $StygianPlayerProfession
