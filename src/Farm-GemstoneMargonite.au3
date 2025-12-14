@@ -371,11 +371,9 @@ EndFunc
 
 
 Func WaitAggroMargonites($timeToWait)
-	If IsPlayerDead() Then Return $FAIL
 	Local $TimerAggro = TimerInit()
-	While TimerDiff($TimerAggro) < $timeToWait
+	While IsPlayerAlive() And TimerDiff($TimerAggro) < $timeToWait
 		If TimerDiff($GemstoneMargoniteFarmTimer) > $MAX_GEMSTONE_MARGONITE_FARM_DURATION Then Return $FAIL
-		If IsPlayerDead() Then Return $FAIL
 		MargoniteDefend()
 		RandomSleep(50)
 	WEnd
@@ -398,8 +396,10 @@ Func MargoniteMoveDefending($destinationX, $destinationY)
 		If IsPlayerAlive() Then
 			Info('Picking up loot')
 			PickUpItems(MargoniteCheckBuffs)
+			Return $SUCCESS
+		Else
+			Return $FAIL
 		EndIf
-		Return IsPlayerAlive()? $SUCCESS : $FAIL
 	Else
 		Return $result
 	EndIf
@@ -493,7 +493,6 @@ EndFunc
 
 
 Func KillMargonites()
-	If IsPlayerDead() Then Return $FAIL
 	Info('Fighting margonites')
 	UseHeroSkill($MargoniteHeroIndex, $Margonite_Hero_EdgeOfExtinction)
 	Switch $MargonitePlayerProfession

@@ -144,13 +144,11 @@ EndFunc
 
 Func GemstoneTormentFarmLoop()
 	Sleep(2000)
-	If IsPlayerDead() Then Return $FAIL
 	Info('Starting Farm')
 	$GemstoneTormentFarmTimer = TimerInit() ; starting run timer, if run lasts longer than max time then bot must have gotten stuck and fail is returned to restart run
 
 	ChangeWeaponSet($Torment_Weapon_Slot_Staff)
 	RandomSleep(250)
-	If IsPlayerDead() Then Return $FAIL
 	If GetLightbringerTitle() < 50000 Then
 		Info('Taking Blessing')
 		GoToNearestNPCToCoords(15784, 2466)
@@ -158,7 +156,6 @@ Func GemstoneTormentFarmLoop()
 		Dialog(0x85)
 		Sleep(500)
 	EndIf
-	If IsPlayerDead() Then Return $FAIL
 
 	If RunTormentFarm(15125, 2794) == $STUCK Then Return $FAIL
 	If RunTormentFarm(15561, 5241) == $STUCK Then Return $FAIL
