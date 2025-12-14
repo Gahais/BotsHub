@@ -962,16 +962,16 @@ Func ScanGWBasePatterns()
 			$memoryInterfaceHeader = SafeDllCall13($kernelHandle, 'ptr', 'VirtualAllocEx', 'handle', GetProcessHandle(), 'ptr', 0, 'ulong_ptr', $GWA2_REFORGED_HEADER_SIZE, 'dword', 0x1000, 'dword', 0x40)
 			; Get the allocated memory address
 			$memoryInterfaceHeader = $memoryInterfaceHeader[0]
-	        If $memoryInterfaceHeader = 0 Then Return SetError(1, 0, 0)
-	        $newHeader = True
-	    EndIf
+			If $memoryInterfaceHeader = 0 Then Return SetError(1, 0, 0)
+			$newHeader = True
+		EndIf
 	EndIf
 
 	If $newHeader Then
 		; Write the allocated memory address to the scan memory location
-	    WriteBinary($GWA2_REFORGED_HEADER_HEXA, $memoryInterfaceHeader)
-	    MemoryWrite($memoryInterfaceHeader + $GWA2_REFORGED_OFFSET_SCAN_ADDRESS, 0)
-	    MemoryWrite($memoryInterfaceHeader + $GWA2_REFORGED_OFFSET_COMMAND_ADDRESS, 0)
+		WriteBinary($GWA2_REFORGED_HEADER_HEXA, $memoryInterfaceHeader)
+		MemoryWrite($memoryInterfaceHeader + $GWA2_REFORGED_OFFSET_SCAN_ADDRESS, 0)
+		MemoryWrite($memoryInterfaceHeader + $GWA2_REFORGED_OFFSET_COMMAND_ADDRESS, 0)
 	EndIf
 
 	Local $allocationScan = False
@@ -1243,7 +1243,6 @@ EndFunc
 
 ;~ Picks up an item.
 Func PickUpItem($item)
-	If GetIsDead(GetMyAgent()) Then Return
 	Local $agentID
 	If Not IsDllStruct($item) Then
 		$agentID = $item
