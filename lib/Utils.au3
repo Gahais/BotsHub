@@ -437,7 +437,7 @@ Func FindAndOpenChests($range = $RANGE_EARSHOT, $defendFunction = Null, $blocked
 			;MoveTo(DllStructGetData($agent, 'X'), DllStructGetData($agent, 'Y'))		;Fail half the time
 			;GoSignpost($agent)															;Seems to work but serious rubberbanding
 			;GoToSignpost($agent)															;Much better solution BUT character doesn't defend itself while going to chest + function kind of sucks
-			GoToSignpostWhileDefending($agent, $defendFunction, $blockedFunction)			;Final solution
+			GoToSignpostWhileDefending($agent, $defendFunction, $blockedFunction)			;Final solution, caution, chest is considered as signpost by game client
 			If IsPlayerDead() Then Return
 			RandomSleep(200)
 			OpenChest()
@@ -1735,17 +1735,14 @@ Func DoForArrayRows($array, $firstIndex, $lastIndex, $function)
 	For $i = $firstIndex - 1 To $lastIndex - 1 ; Caution, array rows are indexed from 1, but $array is indexed from 0
 		If UBound($array, $UBOUND_COLUMNS) == 2 Then
 			$result = $function($array[$i][0], $array[$i][1])
-			If $result <> $SUCCESS Then Return $result
 		ElseIf UBound($array, $UBOUND_COLUMNS) == 3 Then
 			$result = $function($array[$i][0], $array[$i][1], $array[$i][2])
-			If $result <> $SUCCESS Then Return $result
 		ElseIf UBound($array, $UBOUND_COLUMNS) == 4 Then
 			$result = $function($array[$i][0], $array[$i][1], $array[$i][2], $array[$i][3])
-			If $result <> $SUCCESS Then Return $result
 		ElseIf UBound($array, $UBOUND_COLUMNS) == 5 Then
 			$result = $function($array[$i][0], $array[$i][1], $array[$i][2], $array[$i][3], $array[$i][4])
-			If $result <> $SUCCESS Then Return $result
 		EndIf
+		If $result <> $SUCCESS Then Return $result
 	Next
 	Return $SUCCESS
 EndFunc
@@ -1845,13 +1842,6 @@ Func IsOverLine($coefficientX, $coefficientY, $fixedCoefficient, $posX, $posY)
 	If $position > 0 Then
 		Return True
 	EndIf
-	Return False
-EndFunc
-
-
-;~ Is agent in range of coordinates
-Func IsAgentInRange($agent, $X, $Y, $range)
-	If GetDistanceToPoint($agent, $X, $Y) < $range Then Return True
 	Return False
 EndFunc
 
@@ -2169,6 +2159,13 @@ Func BetterGetNearestNPCToCoords($npcAllegiance = Null, $coordX = Null, $coordY 
 	Next
 	Return $nearestAgent
 EndFunc
+
+
+;~ Is agent in range of coordinates
+Func IsAgentInRange($agent, $X, $Y, $range)
+	If GetDistanceToPoint($agent, $X, $Y) < $range Then Return True
+	Return False
+EndFunc
 #EndRegion NPCs
 
 
@@ -2240,7 +2237,8 @@ EndFunc
 
 ;~ Did run fail ?
 Func IsRunFailed()
-	If ($partyFailuresCount > 5) Then
+	Local Static $MaxPartyWipesCount = 5
+	If ($partyFailuresCount > $MaxPartyWipesCount) Then
 		Notice('Party wiped ' & $partyFailuresCount & ' times, run is considered failed.')
 		Return True
 	EndIf
