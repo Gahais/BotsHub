@@ -1,7 +1,7 @@
 #CS ===========================================================================
 ======================================
-|  	  Stygian Gemstones Farm bot     |
-|			  TonReuf   		     |
+|  	  Stygian Gemstones Farm bot	 |
+|			  	TonReuf   			 |
 ======================================
 ;
 ; Run this farm bot as Assassin or Mesmer or Ranger
@@ -147,23 +147,6 @@ Func SetupGemstoneStygianFarm()
 EndFunc
 
 
-Func SetupTeamStygianFarm()
-	Info('Setting up team')
-	Sleep(500)
-	LeaveParty()
-	Sleep(500)
-	If DllStructGetData(GetMyAgent(), 'Primary') == $ID_Ranger Then
-		AddHero($StygianHeroPartyID)
-		Sleep(1000)
-		If GetPartySize() <> 2 Then
-			Warn("Could not add ranger hero to team. Team size different than 2")
-			Return $FAIL
-		EndIf
-	EndIf
-	Return $SUCCESS
-EndFunc
-
-
 Func SetupPlayerStygianFarm()
 	Info('Setting up player build skill bar')
 	Sleep(500 + GetPing())
@@ -183,6 +166,23 @@ Func SetupPlayerStygianFarm()
 	EndSwitch
 	;ChangeWeaponSet(1) ; change to other weapon slot or comment this line if necessary
 	Sleep(500 + GetPing())
+	Return $SUCCESS
+EndFunc
+
+
+Func SetupTeamStygianFarm()
+	Info('Setting up team')
+	Sleep(500)
+	LeaveParty()
+	Sleep(500)
+	If DllStructGetData(GetMyAgent(), 'Primary') == $ID_Ranger Then
+		AddHero($StygianHeroPartyID)
+		Sleep(1000)
+		If GetPartySize() <> 2 Then
+			Warn("Could not add ranger hero to team. Team size different than 2")
+			Return $FAIL
+		EndIf
+	EndIf
 	Return $SUCCESS
 EndFunc
 
@@ -235,23 +235,23 @@ Func GemstoneStygianFarmLoop()
 	Sleep(1000)
 	If GetQuestByID(0x2E6) == Null Then Return $FAIL
 
-	If IsPlayerDead() Then Return $FAIL
 	Switch $StygianPlayerProfession
 		Case $ID_Assassin, $ID_Mesmer
-			StygianFarmMesmerAssassin()
+			Return StygianFarmMesmerAssassin()
 		Case $ID_Ranger
-			StygianFarmRanger()
+			Return StygianFarmRanger()
+		Case Else
+			Warn('You need to run this farm bot as Assassin or Mesmer or Ranger')
+			Return $FAIL
 	EndSwitch
-
-	Return IsPlayerAlive()? $SUCCESS : $FAIL
 EndFunc
 
 
 Func StygianFarmMesmerAssassin()
 	If IsPlayerDead() Then Return $FAIL
-	StygianJobMesmerAssassin()
+	If StygianJobMesmerAssassin() == $FAIL Then Return $FAIL
 	RunStygianFarm(13240, -10006)
-	StygianJobMesmerAssassin()
+	If StygianJobMesmerAssassin() == $FAIL Then Return $FAIL
 	MoveTo(13240, -10006)
 	; Too hard to aggro the 2 groups after that, so pick up loot
 	Local Static $pick_up_event = True
@@ -271,20 +271,20 @@ Func StygianFarmRanger()
 	MoveTo(10871, -7842, 0)
 	If IsPlayerAlive() Then RandomSleep(15000)
 	MoveTo(10575, -8170)
-	StygianJobRanger()
+	If StygianJobRanger() == $FAIL Then Return $FAIL
 	MoveTo(7337, -9709)
 	MoveTo(9071, -7330)
 	If IsPlayerAlive() Then RandomSleep(10000)
-	StygianJobRanger()
+	If StygianJobRanger() == $FAIL Then Return $FAIL
 	;MoveTo(7337, -9709)
 	;MoveTo(9071, -7330)
 	;If IsPlayerAlive() Then RandomSleep(10000)
-	;StygianJobRanger()
+	;If StygianJobRanger() == $FAIL Then Return $FAIL
 	;MoveTo(7337, -9709)
 	;MoveTo(9071, -7330)
 	;If IsPlayerAlive() Then RandomSleep(10000)
-	;StygianJobRanger()
-	Return IsPlayerAlive()? $SUCCESS : $FAIL
+	;If StygianJobRanger() == $FAIL Then Return $FAIL
+	Return $SUCCESS
 EndFunc
 
 
@@ -314,7 +314,7 @@ Func StygianJobMesmerAssassin()
 	MoveTo(12376, -9557)
 	RandomSleep(1500)
 	UseSkillEx($Stygian_Dash)
-	RandomSleep(2700)
+	Sleep(12500) ; waiting for all mobs to come
 	KillStygianMobsUsingWastrelSkills()
 	$SomethingToPickUp = True
 	Return IsPlayerAlive()? $SUCCESS : $FAIL
@@ -402,7 +402,6 @@ EndFunc
 Func KillStygianMobsUsingWastrelSkills()
 	If IsPlayerDead() Then Return $FAIL
 	Local $me, $target, $distance
-	Sleep(10000) ; waiting for all mobs to come
 
 	While CountFoesInRangeOfAgent(GetMyAgent(), $Stygians_Range_Long) > 0 And IsPlayerAlive()
 		If TimerDiff($GemstoneStygianFarmTimer) > $MAX_GEMSTONE_STYGIAN_FARM_DURATION Then Return $FAIL
@@ -422,8 +421,8 @@ Func KillStygianMobsUsingWastrelSkills()
 		RandomSleep(100)
 	WEnd
 	RandomSleep(500)
-	Return IsPlayerAlive()? $SUCCESS : $FAIL
 	;If IsPlayerAlive() Then PickUpItems(StygianCheckSFBuffs, DefaultShouldPickItem, $Stygians_Range_Long)
+	Return IsPlayerAlive()? $SUCCESS : $FAIL
 EndFunc
 
 
