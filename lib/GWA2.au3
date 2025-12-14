@@ -3583,14 +3583,16 @@ EndFunc
 
 ;~ Returns energy of an agent. (Only self/heroes)
 Func GetEnergy($agent = -2)
-	If $agent == -2 Then $agent = GetMyAgent()
+	If $agent == -2 Or $agent == Null Or $agent == 0 Then $agent = GetMyAgent()
+	If $agent <> -2 And Not IsDllStruct($agent) Then $agent = GetAgentByID($agent) ; case when agent ID was passed to function
 	Return DllStructGetData($agent, 'EnergyPercent') * DllStructGetData($agent, 'MaxEnergy')
 EndFunc
 
 
 ;~ Returns health of an agent. (Must have caused numerical change in health)
 Func GetHealth($agent = -2)
-	If $agent == -2 Then $agent = GetMyAgent()
+	If $agent == -2 Or $agent == Null Or $agent == 0 Then $agent = GetMyAgent()
+	If $agent <> -2 And Not IsDllStruct($agent) Then $agent = GetAgentByID($agent) ; case when agent ID was passed to function
 	Return DllStructGetData($agent, 'HealthPercent') * DllStructGetData($agent, 'MaxHealth')
 EndFunc
 
@@ -3822,8 +3824,9 @@ Func GetSkillbarSkillRecharge($skillSlot, $heroIndex = 0)
 	Local $castTime = DllStructGetData($skill, 'Activation') * 1000 ; activation time is in seconds, $castTime in milliseconds
 	Local $aftercast = DllStructGetData($skill, 'Aftercast') * 1000
 
-	; Caution, GetInstanceUpTime() may also include logging into account time which may not be included in in-game cast timestamps, therefore adding GetPing() + 3000 just in case and capping it to be always bigger or equal to 1 with _Max(), if Recharge is non-zero
-	Return $rechargeFutureTimestamp == 0 ? 0 : _Max($rechargeFutureTimestamp + $castTime + $aftercast + GetPing() + 3000 - GetInstanceUpTime(), 1)
+	; Caution, noticed some	discrepancy between GetInstanceUpTime() and recharge timestamps, difference can be negative surprisingly
+	; Therefore capping recharge time to be always bigger or equal to 1 with _Max() if Recharge is non-zero
+	Return $rechargeFutureTimestamp == 0 ? 0 : _Max(1, ($rechargeFutureTimestamp + $castTime + $aftercast + GetPing()) - GetInstanceUpTime())
 EndFunc
 
 
@@ -3928,10 +3931,13 @@ Func GetEffectTimeRemaining($effect, $heroIndex = 0)
 	Local $effectSkill = GetSkillByID(DllStructGetData($effect, 'SkillId'))
 	Local $castTime = DllStructGetData($effectSkill, 'Activation') * 1000 ; activation time is in seconds, $castTime in milliseconds
 	Local $aftercast = DllStructGetData($effectSkill, 'Aftercast') * 1000
+	Local $duration = DllStructGetData($effect, 'Duration') * 1000 ; full duration of effect in seconds, not remaining time
+	Local $castTimeStamp = DllStructGetData($effect, 'TimeStamp') ; timestamp when the effect was started
 
-	; Caution, GetInstanceUpTime() may also include logging into account time which may not be included in in-game cast timestamps, therefore adding GetPing() + 3000 just in case
-	; Caution, other problem is that reapplying the effect doesn't always refresh its start timestamp until first previous effect elapses, therefore capping it to be always bigger or equal to 1 with _Max()
-	Return _Max(DllStructGetData($effect, 'Duration') * 1000 - (GetInstanceUpTime() - (DllStructGetData($effect, 'TimeStamp') + $castTime + $aftercast + GetPing() + 3000)), 1)
+	; Caution, noticed some	discrepancy between GetInstanceUpTime() and cast timestamps, difference can be negative surprisingly
+	; Furthermore, other problem is that reapplying the effect doesn't always refresh its start timestamp until previous effect elapses
+	; Therefore capping remaining effect time to be always bigger or equal to 1 with _Max() if there is still effect on hero/player
+	Return _Max(1, $duration - (GetInstanceUpTime() - ($castTimeStamp + $castTime + $aftercast + GetPing())))
 EndFunc
 
 
