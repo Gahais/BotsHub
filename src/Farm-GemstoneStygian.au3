@@ -117,7 +117,8 @@ Func SetupGemstoneStygianFarm()
 	Info('Setting up farm')
 	If GetMapID() <> $ID_Gate_Of_Anguish Then
 		If TravelToOutpost($ID_Gate_Of_Anguish, $DISTRICT_NAME) == $FAIL Then Return $FAIL
-	Else ; resigning to return to outpost in case when player is in one of 4 DoA farm areas that have the same map ID as Gate of Anguish outpost (474)
+	ElseIf GetMapType() == $ID_Explorable Then
+		; resigning to return to outpost in case when player is in one of 4 DoA farm areas that have the same map ID as Gate of Anguish outpost (474)
 		ResignAndReturnToOutpost()
 	EndIf
 	SwitchToHardModeIfEnabled()
@@ -176,7 +177,7 @@ EndFunc
 Func GoToStygianVeil()
 	TravelToOutpost($ID_Gate_Of_Anguish, $DISTRICT_NAME)
 	Info('Moving to Stygian Veil')
-	; Unfortunately all 4 gemstone farm explorable locations have the same map ID as Gate of Anguish outpost, so it is hard to tell if player left the outpost
+	; Unfortunately all 4 gemstone farm explorable locations have the same map ID as Gate of Anguish outpost, so it is harder to tell if player left the outpost
 	; Therefore below loop checks if player is in close range of coordinates of that start zone where player initially spawns in Stygian Veil
 	Local Static $StartX = -364
 	Local Static $StartY = -10445

@@ -1776,7 +1776,7 @@ EndFunc
 Func GoToAgent($agent, $GoFunction = Null)
 	Local $me
 	Local $blockedCount = 0
-	Local $mapLoading = GetInstanceType(), $mapLoadingOld
+	Local $mapLoading = GetMapType(), $mapLoadingOld
 	Move(DllStructGetData($agent, 'X'), DllStructGetData($agent, 'Y'), 100)
 	Sleep(100)
 	If $GoFunction <> Null Then $GoFunction($agent)
@@ -1785,7 +1785,7 @@ Func GoToAgent($agent, $GoFunction = Null)
 		$me = GetMyAgent()
 		If DllStructGetData($me, 'HealthPercent') <= 0 Then ExitLoop
 		$mapLoadingOld = $mapLoading
-		$mapLoading = GetInstanceType()
+		$mapLoading = GetMapType()
 		If $mapLoading <> $mapLoadingOld Then ExitLoop
 		If Not IsPlayerMoving() Then
 			$blockedCount += 1
@@ -2588,7 +2588,7 @@ EndFunc
 ;~ Set all attributes to 0
 Func ClearAttributes($heroIndex = 0)
 	Local $level
-	If GetInstanceType() <> 0 Then Return
+	If GetMapType() <> $ID_Outpost Then Return False
 	For $i = 0 To UBound($Attributes_Array) - 1
 		Local $attributeID = $Attributes_Array[$i]
 		If GetAttributeByID($attributeID, False, $heroIndex) > 0 Then
@@ -2603,6 +2603,7 @@ Func ClearAttributes($heroIndex = 0)
 			Until GetAttributeByID($attributeID, False, $heroIndex) == 0
 		EndIf
 	Next
+	Return True
 EndFunc
 
 
@@ -4190,7 +4191,7 @@ EndFunc
 
 
 ;~ Returns the instance type (city, explorable, mission, etc ...)
-Func GetInstanceType()
+Func GetMapType()
 	Local $offset[1] = [0x00]
 	Local $result = MemoryReadPtr($instanceInfoPtr, $offset, 'dword')
 	Return $result[1]
@@ -6457,7 +6458,7 @@ Func Disconnected()
 	Local $deadlock = TimerInit()
 	Do
 		Sleep(20)
-		$check = GetInstanceType() <> 2 And GetAgentExists(GetMyID())
+		$check = GetMapType() <> $ID_Loading And GetAgentExists(GetMyID())
 	Until $check Or TimerDiff($deadlock) > 5000
 	If $check = False Then
 		Error('Disconnected!')
@@ -6467,7 +6468,7 @@ Func Disconnected()
 		$deadlock = TimerInit()
 		Do
 			Sleep(20)
-			$check = GetInstanceType() <> 2 And GetAgentExists(GetMyID())
+			$check = GetMapType() <> $ID_Loading And GetAgentExists(GetMyID())
 		Until $check Or TimerDiff($deadlock) > 60000
 		If $check = False Then
 			Error('Failed to Reconnect 1!')
@@ -6476,7 +6477,7 @@ Func Disconnected()
 			$deadlock = TimerInit()
 			Do
 				Sleep(20)
-				$check = GetInstanceType() <> 2 And GetAgentExists(GetMyID())
+				$check = GetMapType() <> $ID_Loading And GetAgentExists(GetMyID())
 			Until $check Or TimerDiff($deadlock) > 60000
 			If $check = False Then
 				Error('Failed to Reconnect 2!')
@@ -6485,7 +6486,7 @@ Func Disconnected()
 				$deadlock = TimerInit()
 				Do
 					Sleep(20)
-					$check = GetInstanceType() <> 2 And GetAgentExists(GetMyID())
+					$check = GetMapType() <> $ID_Loading And GetAgentExists(GetMyID())
 				Until $check Or TimerDiff($deadlock) > 60000
 				If $check = False Then
 					Error('Could not reconnect!')

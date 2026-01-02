@@ -52,7 +52,8 @@ Func NexusChallengeSetup()
 	Info('Setting up farm')
 	If GetMapID() <> $ID_Nexus Then
 		TravelToOutpost($ID_Nexus, $DISTRICT_NAME)
-	Else ; resigning to return to outpost in case when player is in Nexus Challenge that has the same map ID as Nexus outpost (555)
+	ElseIf GetMapType() == $ID_Explorable Then
+		; resigning to return to outpost in case when player is in Nexus Challenge that has the same map ID as Nexus outpost (555)
 		ResignAndReturnToOutpost()
 	EndIf
 	SetDisplayedTitle($ID_Lightbringer_Title)
@@ -67,7 +68,7 @@ EndFunc
 
 Func EnterNexusChallengeMission()
 	TravelToOutpost($ID_Nexus, $DISTRICT_NAME)
-	; Unfortunately Nexus Challenge map has the same map ID as Nexus outpost, so it is hard to tell if player left the outpost
+	; Unfortunately Nexus Challenge map has the same map ID as Nexus outpost, so it is harder to tell if player left the outpost
 	; Therefore below loop checks if player is in close range of coordinates of that start zone where player initially spawns in Nexus Challenge map
 	Local Static $StartX = -391
 	Local Static $StartY = -335

@@ -107,7 +107,8 @@ Func SetupGemstonesFarm()
 	Info('Setting up farm')
 	If GetMapID() <> $ID_Gate_Of_Anguish Then
 		TravelToOutpost($ID_Gate_Of_Anguish, $DISTRICT_NAME)
-	Else ; resigning to return to outpost in case when player is in one of 4 DoA farm areas that have the same map ID as Gate of Anguish outpost (474)
+	ElseIf GetMapType() == $ID_Explorable Then
+		; resigning to return to outpost in case when player is in one of 4 DoA farm areas that have the same map ID as Gate of Anguish outpost (474)
 		ResignAndReturnToOutpost()
 	EndIf
 	SwitchMode($ID_NORMAL_MODE)
