@@ -2079,13 +2079,23 @@ Func CountAlivePartyMembers()
 EndFunc
 
 
+Func IsPlayerAlive()
+	Return BitAND(DllStructGetData(GetMyAgent(), 'Effects'), 0x0010) == 0
+EndFunc
+
+
 Func IsPlayerDead()
 	Return BitAND(DllStructGetData(GetMyAgent(), 'Effects'), 0x0010) > 0
 EndFunc
 
 
-Func IsPlayerAlive()
-	Return BitAND(DllStructGetData(GetMyAgent(), 'Effects'), 0x0010) == 0
+Func IsHeroAlive($heroIndex)
+	Return BitAND(DllStructGetData(GetAgentById(GetHeroID($heroIndex)), 'Effects'), 0x0010) == 0
+EndFunc
+
+
+Func IsHeroDead($heroIndex)
+	Return BitAND(DllStructGetData(GetAgentById(GetHeroID($heroIndex)), 'Effects'), 0x0010) > 0
 EndFunc
 
 
