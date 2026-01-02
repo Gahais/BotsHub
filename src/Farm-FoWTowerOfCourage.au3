@@ -217,10 +217,15 @@ Func FoWToCFarmLoop()
 		DefendFoWToC(False)
 	WEnd
 	Info('Rangers cleared. Picking up loot')
-	If IsPlayerAlive() Then PickUpItems(CastBuffsFowToC)
-	Sleep(500 + GetPing())
-
-	Return $SUCCESS
+	If IsPlayerAlive() Then
+		For $i = 1 To 3 ; Tripled to secure the looting of items
+			PickUpItems(CastBuffsFowToC)
+			Sleep(GetPing())
+		Next
+		Return $SUCCESS
+	Else
+		Return $FAIL
+	EndIf
 EndFunc
 
 

@@ -253,7 +253,10 @@ Func VaettirsFarmLoop()
 
 	If IsPlayerAlive() Then
 		Info('Looting')
-		PickUpItems(VaettirsStayAlive)
+		For $i = 1 To 3 ; Tripled to secure the looting of items
+			PickUpItems(VaettirsStayAlive)
+			Sleep(GetPing())
+		Next
 	EndIf
 
 	Return RezoneToJagaMoraine()
@@ -367,7 +370,10 @@ Func VaettirsMoveDefending($destinationX, $destinationY)
 		VaettirsKillSequence()
 		If IsPlayerAlive() Then
 			Info('Looting')
-			PickUpItems(VaettirsStayAlive)
+			For $i = 1 To 3 ; Tripled to secure the looting of items
+				PickUpItems(VaettirsStayAlive)
+				Sleep(GetPing())
+			Next
 			Return $SUCCESS
 		Else
 			Return $FAIL
