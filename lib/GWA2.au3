@@ -3569,7 +3569,12 @@ EndFunc
 
 ;~ Returns array of party members
 ;~ Param: an array returned by GetAgentArray. This is totally optional, but can greatly improve script speed.
+;~ Caution in outposts all players are matched as team members even when they are not in team, therefore this function checks if player is in outpost and if yes then return team consisting only of player
 Func GetParty($agents = Null)
+	If GetMapType() <> $ID_Explorable Then
+		Local $outpostTeam[1] = [GetMyAgent()]
+		Return $outpostTeam
+	EndIf
 	If $agents == Null Then $agents = GetAgentArray(0xDB)
 	Local $fullParty[8] ; 1D array of full party 8 members, indexed from 0
 	Local $partySize = 0
