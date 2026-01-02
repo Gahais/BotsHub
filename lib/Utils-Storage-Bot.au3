@@ -102,12 +102,12 @@ Func InventoryManagementBeforeRun()
 	; 9-Buy ectoplasm/obsidian with surplus
 	; 10-Store items
 	If GUICtrlRead($GUI_Checkbox_StoreUnidentifiedGoldItems) == $GUI_CHECKED Then
-		TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
+		TravelToOutpost($ID_Embark_Beach, $DISTRICT_NAME)
 		StoreItemsInXunlaiStorage(IsUnidentifiedGoldItem)
 	EndIf
 	If GUICtrlRead($GUI_Checkbox_SortItems) == $GUI_CHECKED Then SortInventory()
 	If $IDENTIFY_ITEMS And HasUnidentifiedItems() Then
-		TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
+		TravelToOutpost($ID_Embark_Beach, $DISTRICT_NAME)
 		IdentifyAllItems()
 	EndIf
 	If GUICtrlRead($GUI_Checkbox_CollectData) == $GUI_CHECKED Then
@@ -119,7 +119,7 @@ Func InventoryManagementBeforeRun()
 		DisconnectFromDatabase()
 	EndIf
 	If $SALVAGE_ANY_ITEM Then
-		TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
+		TravelToOutpost($ID_Embark_Beach, $DISTRICT_NAME)
 		SalvageItems()
 		If $BAGS_COUNT == 5 Then
 			If MoveItemsOutOfEquipmentBag() > 0 Then SalvageItems()
@@ -129,14 +129,14 @@ Func InventoryManagementBeforeRun()
 		;SalvageMaterials()
 	EndIf
 	If ($SELL_BASIC_MATERIALS Or $SELL_RARE_MATERIALS) And HasMaterials() Then
-		TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
+		TravelToOutpost($ID_Embark_Beach, $DISTRICT_NAME)
 		; If we have more than 60k, we risk running into the situation we can't sell because we're too rich, so we store some in xunlai
 		If GetGoldCharacter() > 60000 Then BalanceCharacterGold(10000)
 		If $SELL_BASIC_MATERIALS And HasBasicMaterials() Then SellBasicMaterialsToMerchant()
 		If $SELL_RARE_MATERIALS And HasRareMaterials() Then SellRareMaterialsToMerchant()
 	EndIf
 	If Not $SELL_NOTHING Then
-		TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
+		TravelToOutpost($ID_Embark_Beach, $DISTRICT_NAME)
 		; If we have more than 60k, we risk running into the situation we can't sell because we're too rich, so we store some in xunlai
 		If GetGoldCharacter() > 60000 Then BalanceCharacterGold(10000)
 		SellItemsToMerchant()
@@ -166,8 +166,8 @@ Func InventoryManagementMidRun()
 	; 5-Salvage
 	If GetInventoryKitCount($superiorIdentificationKits) < 1 Or GetInventoryKitCount($salvageKits) < 1 Then
 		Info('Buying kits for passive inventory management')
-		TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
-		; Since we are in EOTN, might as well clear inventory
+		TravelToOutpost($ID_Embark_Beach, $DISTRICT_NAME)
+		; Since we are in Embark Beach, might as well clear inventory
 		InventoryManagementBeforeRun()
 		BuyKitsForMidRun()
 		Return True
@@ -578,9 +578,10 @@ EndFunc
 
 ;~ Sell general items to trader
 Func SellItemsToMerchant($shouldSellItem = DefaultShouldSellItem, $dryRun = False)
-	TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
+	TravelToOutpost($ID_Embark_Beach, $DISTRICT_NAME)
 	Info('Moving to merchant')
-	Local $merchant = GetNearestNPCToCoords(-2700, 1075)
+	;Local $merchant = GetNearestNPCToCoords(-2700, 1075) ; EoTN merchant coordinates
+	Local $merchant = GetNearestNPCToCoords(2158, -2006) ; Embark Beach merchant coordinates
 	UseCitySpeedBoost()
 	GoToNPC($merchant)
 	RandomSleep(500)
@@ -639,11 +640,12 @@ Func HasInInventory($condition)
 EndFunc
 
 
-;~ Sell basic materials to materials merchant in EOTN
+;~ Sell basic materials to materials merchant in town
 Func SellBasicMaterialsToMerchant($shouldSellMaterial = DefaultShouldSellBasicMaterial)
-	TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
+	TravelToOutpost($ID_Embark_Beach, $DISTRICT_NAME)
 	Info('Moving to materials merchant')
-	Local $materialMerchant = GetNearestNPCToCoords(-1850, 875)
+	;Local $materialMerchant = GetNearestNPCToCoords(-1850, 875) ; EoTN basic material merchant coordinates
+	Local $materialMerchant = GetNearestNPCToCoords(2997, -2271) ; Embark Beach basic material merchant coordinates
 	UseCitySpeedBoost()
 	GoToNPC($materialMerchant)
 	RandomSleep(500)
@@ -675,11 +677,12 @@ Func SellBasicMaterialsToMerchant($shouldSellMaterial = DefaultShouldSellBasicMa
 EndFunc
 
 
-;~ Sell rare materials to rare materials merchant in EOTN
+;~ Sell rare materials to rare materials merchant in town
 Func SellRareMaterialsToMerchant($shouldSellMaterial = DefaultShouldSellRareMaterial)
-	TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
+	TravelToOutpost($ID_Embark_Beach, $DISTRICT_NAME)
 	Info('Moving to rare materials merchant')
-	Local $rareMaterialMerchant = GetNearestNPCToCoords(-2100, 1125)
+	;Local $rareMaterialMerchant = GetNearestNPCToCoords(-2100, 1125) ; EoTN rare material merchant coordinates
+	Local $rareMaterialMerchant = GetNearestNPCToCoords(2928, -2452) ; Embark Beach rare material merchant coordinates
 	UseCitySpeedBoost()
 	GoToNPC($rareMaterialMerchant)
 	RandomSleep(250)
@@ -711,11 +714,12 @@ Func SellRareMaterialsToMerchant($shouldSellMaterial = DefaultShouldSellRareMate
 EndFunc
 
 
-;~ Buy rare material from rare materials merchant in EOTN
+;~ Buy rare material from rare materials merchant in town
 Func BuyRareMaterialFromMerchant($materialModelID, $amount)
-	TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
+	TravelToOutpost($ID_Embark_Beach, $DISTRICT_NAME)
 	Info('Moving to rare materials merchant')
-	Local $rareMaterialMerchant = GetNearestNPCToCoords(-2100, 1125)
+	;Local $rareMaterialMerchant = GetNearestNPCToCoords(-2100, 1125) ; EoTN rare material merchant coordinates
+	Local $rareMaterialMerchant = GetNearestNPCToCoords(2928, -2452) ; Embark Beach rare material merchant coordinates
 	UseCitySpeedBoost()
 	GoToNPC($rareMaterialMerchant)
 	RandomSleep(250)
@@ -732,17 +736,18 @@ Func BuyRareMaterialFromMerchant($materialModelID, $amount)
 EndFunc
 
 
-;~ Buy rare material from rare materials merchant in EOTN until you have little or no money left
+;~ Buy rare material from rare materials merchant in town until you have little or no money left
 ;~ Possible issue if you provide a very low poorThreshold and the price of an item hike up enough to reduce your money to less than 0
 ;~ So please only use with $poorThreshold > 5k
 Func BuyRareMaterialFromMerchantUntilPoor($materialModelID, $poorThreshold = 20000, $backupMaterialModelID = Null)
-	TravelToOutpost($ID_Eye_of_the_North, $DISTRICT_NAME)
+	TravelToOutpost($ID_Embark_Beach, $DISTRICT_NAME)
 	If CountSlots(1, 4) == 0 Then
 		Warn('No room in inventory to buy rare materials, tick some checkboxes to clear inventory')
 		Return
 	EndIf
 	Info('Moving to rare materials merchant')
-	Local $rareMaterialMerchant = GetNearestNPCToCoords(-2100, 1125)
+	;Local $rareMaterialMerchant = GetNearestNPCToCoords(-2100, 1125) ; EoTN rare material merchant coordinates
+	Local $rareMaterialMerchant = GetNearestNPCToCoords(2928, -2452) ; Embark Beach rare material merchant coordinates
 	UseCitySpeedBoost()
 	GoToNPC($rareMaterialMerchant)
 	RandomSleep(250)
@@ -843,8 +848,8 @@ Func BuyKitsForMidRun()
 	Local $identificationUses = CountRemainingKitUses($ID_Superior_Identification_Kit)
 	Local $identificationKitsRequired = KitsRequired($requiredIdentificationKitUses - $identificationUses, $ID_Superior_Identification_Kit)
 
-	If $salvageKitsRequired > 0 Then BuySalvageKitInEOTN($salvageKitsRequired)
-	If $identificationKitsRequired > 0 Then BuySuperiorIdentificationKitInEOTN($identificationKitsRequired)
+	If $salvageKitsRequired > 0 Then BuySalvageKitInTown($salvageKitsRequired)
+	If $identificationKitsRequired > 0 Then BuySuperiorIdentificationKitInTown($identificationKitsRequired)
 EndFunc
 
 
