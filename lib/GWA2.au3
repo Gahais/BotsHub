@@ -3109,7 +3109,7 @@ Func GetNearestItemByModelIDToAgent($modelID, $agent)
 	If GetMaxAgents() > 0 Then
 		For $i = 1 To GetMaxAgents()
 			Local $itemAgent = GetAgentByID($i)
-			If Not GetIsMovable($itemAgent) Then ContinueLoop ; item is considered movable
+			If Not IsItemAgentType($itemAgent) Then ContinueLoop
 			Local $agentModelID = DllStructGetData(GetItemByAgentID($i), 'ModelID')
 			If $agentModelID = $modelID Then
 				$distance = GetDistance($itemAgent, $agent)
@@ -3446,15 +3446,15 @@ Func GetAgentByName($agentName)
 EndFunc
 
 
-;~ Returns the nearest signpost to an agent.
+;~ Returns the nearest signpost to an agent. Caution, chest can also be matched as static object agent
 Func GetNearestSignpostToAgent($agent)
-	Return GetNearestAgentToAgent($agent, 0x200)
+	Return GetNearestAgentToAgent($agent, $ID_Agent_Type_Static)
 EndFunc
 
 
 ;~ Returns the nearest NPC to an agent.
 Func GetNearestNPCToAgent($agent)
-	Return GetNearestAgentToAgent($agent, 0xDB, NPCAgentFilter)
+	Return GetNearestAgentToAgent($agent, $ID_Agent_Type_NPC, NPCAgentFilter)
 EndFunc
 
 
@@ -3469,7 +3469,7 @@ EndFunc
 
 ;~ Returns the nearest enemy to an agent.
 Func GetNearestEnemyToAgent($agent)
-	Return GetNearestAgentToAgent($agent, 0xDB, EnemyAgentFilter)
+	Return GetNearestAgentToAgent($agent, $ID_Agent_Type_NPC, EnemyAgentFilter)
 EndFunc
 
 
@@ -3509,28 +3509,28 @@ EndFunc
 ;~ Returns the nearest item to an agent.
 Func GetNearestItemToAgent($agent, $canPickUp = True)
 	If $canPickUp Then
-		Return GetNearestAgentToAgent($agent, 0x400, GetCanPickUp)
+		Return GetNearestAgentToAgent($agent, $ID_Agent_Type_Item, GetCanPickUp)
 	Else
-		Return GetNearestAgentToAgent($agent, 0x400)
+		Return GetNearestAgentToAgent($agent, $ID_Agent_Type_Item)
 	EndIf
 EndFunc
 
 
-;~ Returns the nearest signpost to a set of coordinates.
+;~ Returns the nearest signpost to a set of coordinates. Caution, chest can also be matched as static object agent
 Func GetNearestSignpostToCoords($X, $Y)
-	Return GetNearestAgentToCoords($X, $Y, 0x200)
+	Return GetNearestAgentToCoords($X, $Y, $ID_Agent_Type_Static)
 EndFunc
 
 
 ;~ Returns the nearest NPC to a set of coordinates.
 Func GetNearestNPCToCoords($X, $Y)
-	Return GetNearestAgentToCoords($X, $Y, 0xDB, NPCAgentFilter)
+	Return GetNearestAgentToCoords($X, $Y, $ID_Agent_Type_NPC, NPCAgentFilter)
 EndFunc
 
 
 ;~ Returns the nearest enemy to coordinates
 Func GetNearestEnemyToCoords($X, $Y)
-	Return GetNearestAgentToCoords($X, $Y, 0xDB, EnemyAgentFilter)
+	Return GetNearestAgentToCoords($X, $Y, $ID_Agent_Type_NPC, EnemyAgentFilter)
 EndFunc
 
 
@@ -3575,7 +3575,7 @@ Func GetParty($agents = Null)
 		Local $outpostTeam[1] = [GetMyAgent()]
 		Return $outpostTeam
 	EndIf
-	If $agents == Null Then $agents = GetAgentArray(0xDB)
+	If $agents == Null Then $agents = GetAgentArray($ID_Agent_Type_NPC)
 	Local $fullParty[8] ; 1D array of full party 8 members, indexed from 0
 	Local $partySize = 0
 	For $agent In $agents
@@ -3644,7 +3644,7 @@ EndFunc
 
 ;~ Return the number of enemy agents targeting the given party member.
 Func GetPartyMemberDanger($agent, $agents = Null)
-	If $agents == Null Then $agents = GetAgentArray(0xDB)
+	If $agents == Null Then $agents = GetAgentArray($ID_Agent_Type_NPC)
 	$party = GetParty($agents)
 	$partyMemberDangers = GetPartyDanger($agents)
 
@@ -3660,7 +3660,7 @@ EndFunc
 ;~ Param1: an array returned by GetAgentArray(). This is totally optional, but can greatly improve script speed.
 ;~ Param2: an array returned by GetParty() This is totally optional, but can greatly improve script speed.
 Func GetPartyDanger($agents = Null, $party = Null)
-	If $agents == Null Then $agents = GetAgentArray(0xDB)
+	If $agents == Null Then $agents = GetAgentArray($ID_Agent_Type_NPC)
 	If $party == Null Then $party = GetParty($agents)
 
 	Local $resultLevels[UBound($party)]
@@ -3710,21 +3710,21 @@ EndFunc
 
 
 #Region AgentInfo
-;~ Tests if an agent is living.
-Func GetIsLiving($agent)
-	Return DllStructGetData($agent, 'Type') = 0xDB
+;~ Tests if an agent is alive NPC, like player, party members, allies, foes.
+Func IsNPCAgentType($agent)
+	Return DllStructGetData($agent, 'Type') = $ID_Agent_Type_NPC
 EndFunc
 
 
 ;~ Tests if an agent is a signpost/chest/etc.
-Func GetIsStatic($agent)
-	Return DllStructGetData($agent, 'Type') = 0x200
+Func IsStaticAgentType($agent)
+	Return DllStructGetData($agent, 'Type') = $ID_Agent_Type_Static
 EndFunc
 
 
 ;~ Tests if an agent is an item.
-Func GetIsMovable($agent)
-	Return DllStructGetData($agent, 'Type') = 0x400
+Func IsItemAgentType($agent)
+	Return DllStructGetData($agent, 'Type') = $ID_Agent_Type_Item
 EndFunc
 
 
