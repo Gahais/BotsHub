@@ -1410,6 +1410,8 @@ Func BuyInTown($itemID, $itemPosition, $itemPrice, $amount = 1, $stackable = Fal
 	;Local $merchant = GetNearestNPCToCoords(-2700, 1075) ; EoTN merchant coordinates
 	Local $merchant = GetNearestNPCToCoords(2158, -2006) ; Embark Beach merchant coordinates
 	UseCitySpeedBoost()
+	MoveTo(1950, 0)
+	MoveTo(2150, -1550)
 	GoToNPC($merchant)
 	RandomSleep(500)
 

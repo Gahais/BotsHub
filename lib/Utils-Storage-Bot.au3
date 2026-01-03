@@ -583,6 +583,8 @@ Func SellItemsToMerchant($shouldSellItem = DefaultShouldSellItem, $dryRun = Fals
 	;Local $merchant = GetNearestNPCToCoords(-2700, 1075) ; EoTN merchant coordinates
 	Local $merchant = GetNearestNPCToCoords(2158, -2006) ; Embark Beach merchant coordinates
 	UseCitySpeedBoost()
+	MoveTo(1950, 0)
+	MoveTo(2150, -1550)
 	GoToNPC($merchant)
 	RandomSleep(500)
 
@@ -647,6 +649,8 @@ Func SellBasicMaterialsToMerchant($shouldSellMaterial = DefaultShouldSellBasicMa
 	;Local $materialMerchant = GetNearestNPCToCoords(-1850, 875) ; EoTN basic material merchant coordinates
 	Local $materialMerchant = GetNearestNPCToCoords(2997, -2271) ; Embark Beach basic material merchant coordinates
 	UseCitySpeedBoost()
+	MoveTo(1950, 0)
+	MoveTo(2150, -1550)
 	GoToNPC($materialMerchant)
 	RandomSleep(500)
 
@@ -684,6 +688,8 @@ Func SellRareMaterialsToMerchant($shouldSellMaterial = DefaultShouldSellRareMate
 	;Local $rareMaterialMerchant = GetNearestNPCToCoords(-2100, 1125) ; EoTN rare material merchant coordinates
 	Local $rareMaterialMerchant = GetNearestNPCToCoords(2928, -2452) ; Embark Beach rare material merchant coordinates
 	UseCitySpeedBoost()
+	MoveTo(1950, 0)
+	MoveTo(2150, -1550)
 	GoToNPC($rareMaterialMerchant)
 	RandomSleep(250)
 
@@ -721,6 +727,8 @@ Func BuyRareMaterialFromMerchant($materialModelID, $amount)
 	;Local $rareMaterialMerchant = GetNearestNPCToCoords(-2100, 1125) ; EoTN rare material merchant coordinates
 	Local $rareMaterialMerchant = GetNearestNPCToCoords(2928, -2452) ; Embark Beach rare material merchant coordinates
 	UseCitySpeedBoost()
+	MoveTo(1950, 0)
+	MoveTo(2150, -1550)
 	GoToNPC($rareMaterialMerchant)
 	RandomSleep(250)
 
@@ -749,6 +757,8 @@ Func BuyRareMaterialFromMerchantUntilPoor($materialModelID, $poorThreshold = 200
 	;Local $rareMaterialMerchant = GetNearestNPCToCoords(-2100, 1125) ; EoTN rare material merchant coordinates
 	Local $rareMaterialMerchant = GetNearestNPCToCoords(2928, -2452) ; Embark Beach rare material merchant coordinates
 	UseCitySpeedBoost()
+	MoveTo(1950, 0)
+	MoveTo(2150, -1550)
 	GoToNPC($rareMaterialMerchant)
 	RandomSleep(250)
 
