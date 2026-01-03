@@ -121,7 +121,7 @@ Global $WEAPON_SLOT = 1
 Global $INVENTORY_SPACE_NEEDED = 5
 Global $RUN_TIMER = Null ; global variable to measure elapsed time of farm run
 
-Global $AVAILABLE_FARMS = 'Asuran|Boreal|Corsairs|Dragon Moss|Eden Iris|Feathers|Follower|FoW|FoW Tower of Courage|Froggy|Gemstones|Gemstone Margonite|Gemstone Stygian|Gemstone Torment|Glint Challenge|Jade Brotherhood|Kournans|Kurzick|Lightbringer|Lightbringer 2|Luxon|Mantids|Ministerial Commendations|Minotaurs|Nexus Challenge|Norn|OmniFarm|Pongmei|Raptors|SoO|SpiritSlaves|Sunspear Armor|Tasca|Underworld|Vaettirs|Vanguard|Voltaic|War Supply Keiran|Storage|Tests|TestSuite|Dynamic execution'
+Global $AVAILABLE_FARMS = '|Asuran|Boreal|Corsairs|Dragon Moss|Eden Iris|Feathers|Follower|FoW|FoW Tower of Courage|Froggy|Gemstones|Gemstone Margonite|Gemstone Stygian|Gemstone Torment|Glint Challenge|Jade Brotherhood|Kournans|Kurzick|Lightbringer|Lightbringer 2|Luxon|Mantids|Ministerial Commendations|Minotaurs|Nexus Challenge|Norn|OmniFarm|Pongmei|Raptors|SoO|SpiritSlaves|Sunspear Armor|Tasca|Underworld|Vaettirs|Vanguard|Voltaic|War Supply Keiran|Storage|Tests|TestSuite|Dynamic execution'
 Global $AVAILABLE_DISTRICTS = '|Random|America|China|English|French|German|International|Italian|Japan|Korea|Polish|Russian|Spanish'
 Global $AVAILABLE_BAG_COUNTS = '|1|2|3|4|5'
 Global $AVAILABLE_WEAPON_SLOTS = '|1|2|3|4'
@@ -898,7 +898,7 @@ Func main()
 		RefreshCharactersComboBox()
 	Else
 		GUICtrlDelete($GUI_Combo_CharacterChoice)
-		$GUI_Combo_CharacterChoice = GUICtrlCreateInput('Character Name Input', 10, 420, 136, 20)
+		$GUI_Combo_CharacterChoice = GUICtrlCreateCombo('Character Name Input', 10, 470, 150, 20)
 	EndIf
 	FillConfigurationCombo()
 	LoadDefaultConfiguration()
@@ -1429,10 +1429,10 @@ EndFunc
 Func ReadConfigFromJson($jsonString)
 	Local $jsonObject = _JSON_Parse($jsonString)
 	GUICtrlSetData($GUI_Combo_CharacterChoice, _JSON_Get($jsonObject, 'main.character'))
-	; below line is a fix for a very weird bug that character combobox truly updates only after being set second time. _JSON_Get() function seems to be fine, maybe this is AutoIT bug
+	; below line is a fix for a very weird bug that character combobox truly updates during loading farm configuration only after being set second time. _JSON_Get() function seems to be fine, maybe this is AutoIT bug
 	GUICtrlSetData($GUI_Combo_CharacterChoice, _JSON_Get($jsonObject, 'main.character'))
 	GUICtrlSetData($GUI_Combo_FarmChoice, _JSON_Get($jsonObject, 'main.farm'))
-	; below line is a fix for a very weird bug that farm combobox sometimes updates only after being set second time. _JSON_Get() function seems to be fine, maybe this is AutoIT bug
+	; below line is a fix for a very weird bug that farm combobox sometimes updates during loading farm configuration only after being set second time. _JSON_Get() function seems to be fine, maybe this is AutoIT bug
 	GUICtrlSetData($GUI_Combo_FarmChoice, _JSON_Get($jsonObject, 'main.farm'))
 	UpdateFarmDescription(_JSON_Get($jsonObject, 'main.farm'))
 	Local $weaponSlot = _JSON_Get($jsonObject, 'run.weapon_slot')
@@ -1706,6 +1706,7 @@ Func RefreshCharactersComboBox()
 	For $i = 1 To $gameClients[0][0]
 		If $gameClients[$i][0] <> -1 Then $comboList &= '|' & $gameClients[$i][3]
 	Next
+	Opt('GUIDataSeparatorChar', '|') ;'|' is the default, but caution is advised that it can be overriden by '.' which is used for tree view
 	GUICtrlSetData($GUI_Combo_CharacterChoice, $comboList, $gameClients[0][0] > 0 ? $gameClients[1][3] : '')
 	If ($gameClients[0][0] > 0) Then SelectClient(1)
 EndFunc
